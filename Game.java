@@ -2,6 +2,7 @@ package checkers;
 
 public class Game {
 	int[][] tiles = new int[8][8];
+	int[][] move = new int[2][2];
 
 	public Game() {
 
@@ -25,5 +26,10 @@ public class Game {
 
 	public int getTile(int x, int y) {
 		return tiles[x][y];
+	}
+
+	public void setMove(int x, int y) {
+
+		System.out.println(move);
 	}
 }
