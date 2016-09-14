@@ -1,5 +1,6 @@
 package checkers;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,14 +8,14 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class GUI extends JPanel {
 	private JButton[][] tiles;
-	private JFrame frame;
-	private JPanel panel;
 	private ImageIcon[] imageIcon;
 	private Game game;
+	private JLabel currentTurnLabel, currentTurn;
 
 	public GUI() {
 
@@ -24,8 +25,10 @@ public class GUI extends JPanel {
 		tiles = new JButton[8][8];
 		JFrame frame = new JFrame("Checkers");
 		JPanel panel = new JPanel();
+		JPanel currentTurnPanel = new JPanel();
 		ButtonListener listener = new ButtonListener();
-
+		JLabel currentTurnLabel = new JLabel("Current Turn (doesnt work right now): ");
+		JLabel currentTurn = new JLabel(game.getTurn());
 		GridLayout gridLayout = new GridLayout(8, 8);
 		panel.setLayout(gridLayout);
 
@@ -47,11 +50,16 @@ public class GUI extends JPanel {
 			}
 		}
 
+		// Adds the components to the current turn panel
+		currentTurnPanel.add(currentTurnLabel);
+		currentTurnPanel.add(currentTurn);
+
 		// necessary frame properties
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800, 800);
 		frame.add(panel);
+		frame.add(currentTurnPanel, BorderLayout.NORTH);
 	}
 
 	public static void main(String[] args) {
@@ -66,9 +74,21 @@ public class GUI extends JPanel {
 				for (int y = 0; y < 8; y++) {
 					if (tiles[x][y] == event.getSource()) {
 						game.setMove(x, y);
+						reloadBoard();
 					}
 				}
 			}
+
 		}
+
+		// Reloads the board UI after every click
+		public void reloadBoard() {
+			for (int x = 0; x < 8; x++) {
+				for (int y = 0; y < 8; y++) {
+					tiles[x][y].setIcon(imageIcon[game.getTile(x, y)]);
+				}
+			}
+		}
+
 	}
 }
