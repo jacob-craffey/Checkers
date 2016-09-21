@@ -1,3 +1,5 @@
+//GUI
+
 package checkers;
 
 import java.awt.BorderLayout;
@@ -15,7 +17,9 @@ public class GUI extends JPanel {
 	private JButton[][] tiles;
 	private ImageIcon[] imageIcon;
 	private Game game;
-	private JLabel currentTurnLabel, currentTurn;
+	private JLabel currentTurnLabel;
+	private JLabel currentTurn = new JLabel();
+	private JButton endTurn;
 
 	public GUI() {
 
@@ -25,16 +29,18 @@ public class GUI extends JPanel {
 		tiles = new JButton[8][8];
 		JFrame frame = new JFrame("Checkers");
 		JPanel panel = new JPanel();
+		JPanel endTurnPanel = new JPanel();
 		JPanel currentTurnPanel = new JPanel();
 		ButtonListener listener = new ButtonListener();
-		JLabel currentTurnLabel = new JLabel("Current Turn (doesnt work right now): ");
-		JLabel currentTurn = new JLabel(game.getTurn());
+		currentTurnLabel = new JLabel("Current Turn: ");
+		currentTurn = new JLabel(game.getTurn());
 		GridLayout gridLayout = new GridLayout(8, 8);
+		endTurn = new JButton("End Turn");
 		panel.setLayout(gridLayout);
 
 		// assigns colored tiles to button's value
-		imageIcon = new ImageIcon[4];
-		for (int tileValue = 0; tileValue < 4; tileValue++) {
+		imageIcon = new ImageIcon[6];
+		for (int tileValue = 0; tileValue < 6; tileValue++) {
 			imageIcon[tileValue] = new ImageIcon(
 					"C:/Users/Jacob/workspace/Checkers/src/checkers/tiles/" + tileValue + ".jpg");
 		}
@@ -54,12 +60,18 @@ public class GUI extends JPanel {
 		currentTurnPanel.add(currentTurnLabel);
 		currentTurnPanel.add(currentTurn);
 
+		// Adds the components to the endTurnPanel
+		endTurnPanel.add(endTurn);
+		endTurn.addActionListener(listener);
+
 		// necessary frame properties
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800, 800);
 		frame.add(panel);
 		frame.add(currentTurnPanel, BorderLayout.NORTH);
+		frame.add(endTurnPanel, BorderLayout.EAST);
+		frame.setResizable(false);
 	}
 
 	public static void main(String[] args) {
@@ -75,8 +87,14 @@ public class GUI extends JPanel {
 					if (tiles[x][y] == event.getSource()) {
 						game.setMove(x, y);
 						reloadBoard();
+						currentTurn.setText(game.getTurn());
 					}
 				}
+			}
+
+			if (endTurn == event.getSource()) {
+				game.turn();
+				currentTurn.setText(game.getTurn());
 			}
 
 		}
