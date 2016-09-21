@@ -7,3 +7,5 @@ Checkers and Chess game for CIS 350
 
 
 -isJumpValid and jump can be optimized better
+
+-Once finished debug, we can start the options with boardsize, colors, etc.
