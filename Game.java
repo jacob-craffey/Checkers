@@ -13,8 +13,8 @@ public class Game {
 	final int JUMP_RIGHT = 2;
 	final int JUMP_UP = -2;
 	final int JUMP_DOWN = 2;
-	final int UP_ONE = 1;
-	final int DOWN_ONE = -1;
+	final int DOWN_ONE = 1;
+	final int UP_ONE = -1;
 	final int RIGHT_ONE = 1;
 	final int LEFT_ONE = -1;
 	final int BLACK = 2;
@@ -113,7 +113,7 @@ public class Game {
 
 	public void kingMove() {
 		if (turn == BLACK && tiles[move[0]][move[1]] == BLACK_KING) {
-			if (move[0] == (move[2] + UP_ONE) || move[0] == (move[2] + DOWN_ONE)) {
+			if (move[0] == (move[2] + DOWN_ONE) || move[0] == (move[2] + UP_ONE)) {
 				if ((move[1] == (move[3] + LEFT_ONE)) || (move[1] == (move[3] + RIGHT_ONE))) {
 					turnEnd = true;
 					swapTiles(move[0], move[1], move[2], move[3]);
@@ -121,7 +121,7 @@ public class Game {
 			}
 		}
 		if (turn == RED && tiles[move[0]][move[1]] == RED_KING) {
-			if (move[0] == (move[2] + UP_ONE) || move[0] == (move[2] + DOWN_ONE)) {
+			if (move[0] == (move[2] + DOWN_ONE) || move[0] == (move[2] + UP_ONE)) {
 				if ((move[1] == (move[3] + LEFT_ONE)) || (move[1] == (move[3] + RIGHT_ONE))) {
 					turnEnd = true;
 					swapTiles(move[0], move[1], move[2], move[3]);
@@ -135,7 +135,7 @@ public class Game {
 		// Checks to see if BLACK player clicks a BLACK checker
 		if (turn == BLACK && tiles[move[0]][move[1]] == BLACK) {
 			// Checks if BLACK player's second click 1 row above
-			if (move[0] == (move[2] + UP_ONE)) {
+			if (move[0] == (move[2] + DOWN_ONE)) {
 				// Checks to see if the BLACK player's second click is diagonal
 				// of the first click
 				if ((move[1] == (move[3] + LEFT_ONE)) || (move[1] == (move[3] + RIGHT_ONE))) {
@@ -150,7 +150,7 @@ public class Game {
 		// Checks to see if RED player clicks a RED checker
 		if (turn == RED && tiles[move[0]][move[1]] == RED) {
 			// Checks if RED player's second click 1 row down
-			if (move[0] == (move[2] + DOWN_ONE)) {
+			if (move[0] == (move[2] + UP_ONE)) {
 				// Checks to see if the RED player's second click is diagonal of
 				// the first click
 				if ((move[1] == (move[3] + LEFT_ONE)) || (move[1] == (move[3] + RIGHT_ONE))) {
@@ -172,8 +172,7 @@ public class Game {
 			if (move[0] > move[2] && move[1] < move[3]) {
 				if (tiles[move[0] - 1][move[1] + 1] == RED || tiles[move[0] - 1][move[1] + 1] == RED_KING) {
 					if (move[0] == move[2] + 2 && move[1] == move[3] - 2 && tiles[move[2]][move[3]] == BROWN_SPACE) {
-						System.out.println("upright");
-						jump("up", "right");
+						jump(RIGHT_ONE, UP_ONE);
 					}
 				}
 			}
@@ -181,8 +180,7 @@ public class Game {
 			if (move[0] > move[2] && move[1] > move[3]) {
 				if (tiles[move[0] - 1][move[1] - 1] == RED || tiles[move[0] - 1][move[1] - 1] == RED_KING) {
 					if (move[0] == move[2] + 2 && move[1] == move[3] + 2 && tiles[move[2]][move[3]] == BROWN_SPACE) {
-						System.out.println("upleft");
-						jump("up", "left");
+						jump(LEFT_ONE, UP_ONE);
 					}
 				}
 			}
@@ -191,8 +189,7 @@ public class Game {
 				if (move[0] < move[2] && move[1] < move[3]) {
 					if (tiles[move[0] + 1][move[1] + 1] == RED || tiles[move[0] + 1][move[1] + 1] == RED_KING) {
 						if (move[0] + 2 == move[2] && move[1] + 2 == move[3]) {
-
-							jump("down", "right");
+							jump(RIGHT_ONE, DOWN_ONE);
 						}
 					}
 				}
@@ -203,7 +200,7 @@ public class Game {
 					if (tiles[move[0] + 1][move[1] - 1] == RED || tiles[move[0] + 1][move[1] - 1] == RED_KING) {
 						if (move[0] + 2 == move[2] && move[1] - 2 == move[3]
 								&& tiles[move[2]][move[3]] == BROWN_SPACE) {
-							jump("down", "left");
+							jump(LEFT_ONE, DOWN_ONE);
 						}
 					}
 				}
@@ -217,7 +214,7 @@ public class Game {
 					if (tiles[move[0] - 1][move[1] + 1] == BLACK || tiles[move[0] - 1][move[1] + 1] == BLACK_KING) {
 						if (move[0] - 2 == move[2] && move[1] + 2 == move[3]
 								&& tiles[move[2]][move[3]] == BROWN_SPACE) {
-							jump("up", "right");
+							jump(RIGHT_ONE, UP_ONE);
 						}
 					}
 				}
@@ -228,7 +225,7 @@ public class Game {
 					if (tiles[move[0] - 1][move[1] - 1] == BLACK || tiles[move[0] - 1][move[1] - 1] == BLACK_KING) {
 						if (move[0] - 2 == move[2] && move[1] - 2 == move[3]
 								&& tiles[move[2]][move[3]] == BROWN_SPACE) {
-							jump("up", "left");
+							jump(LEFT_ONE, UP_ONE);
 						}
 					}
 				}
@@ -237,8 +234,7 @@ public class Game {
 			if (move[0] < move[2] && move[1] < move[3]) {
 				if (tiles[move[0] + 1][move[1] + 1] == BLACK || tiles[move[0] + 1][move[1] + 1] == BLACK_KING) {
 					if (move[0] + 2 == move[2] && move[1] + 2 == move[3] && tiles[move[2]][move[3]] == BROWN_SPACE) {
-
-						jump("down", "right");
+						jump(RIGHT_ONE, DOWN_ONE);
 					}
 				}
 			}
@@ -247,7 +243,7 @@ public class Game {
 			if (move[0] < move[2] && move[1] > move[3]) {
 				if (tiles[move[0] + 1][move[1] - 1] == BLACK || tiles[move[0] + 1][move[1] - 1] == BLACK_KING) {
 					if (move[0] + 2 == move[2] && move[1] - 2 == move[3] && tiles[move[2]][move[3]] == BROWN_SPACE) {
-						jump("down", "left");
+						jump(LEFT_ONE, DOWN_ONE);
 					}
 				}
 			}
@@ -255,71 +251,48 @@ public class Game {
 		return false;
 	}
 
-	public void jump(String vertical, String horizontal) {
-		if (turn == BLACK) {
-			if (vertical == "up" && horizontal == "left") {
-				tiles[move[0] - 1][move[1] - 1] = BROWN_SPACE;
-				swapTiles(move[0], move[1], move[2], move[3]);
-				isAnotherJumpPossible();
-				return;
-			}
-			if (vertical == "up" && horizontal == "right") {
-				tiles[move[0] - 1][move[1] + 1] = BROWN_SPACE;
-				swapTiles(move[0], move[1], move[2], move[3]);
-				isAnotherJumpPossible();
-				return;
-			}
-			if (vertical == "down" && horizontal == "right") {
-				tiles[move[0] + 1][move[1] + 1] = BROWN_SPACE;
-				swapTiles(move[0], move[1], move[2], move[3]);
-				isAnotherJumpPossible();
-				return;
-			}
-			if (vertical == "down" && horizontal == "left") {
-				tiles[move[0] + 1][move[1] - 1] = BROWN_SPACE;
-				swapTiles(move[0], move[1], move[2], move[3]);
-				isAnotherJumpPossible();
-				return;
-			}
-		}
-		if (turn == RED) {
-			if (vertical == "up" && horizontal == "left") {
-				tiles[move[0] - 1][move[1] - 1] = BROWN_SPACE;
-				swapTiles(move[0], move[1], move[2], move[3]);
-				isAnotherJumpPossible();
-				return;
-			}
-			if (vertical == "up" && horizontal == "right") {
-				tiles[move[0] - 1][move[1] + 1] = BROWN_SPACE;
-				swapTiles(move[0], move[1], move[2], move[3]);
-				isAnotherJumpPossible();
-				return;
-			}
-			if (vertical == "down" && horizontal == "right") {
-				tiles[move[0] + 1][move[1] + 1] = BROWN_SPACE;
-				swapTiles(move[0], move[1], move[2], move[3]);
-				isAnotherJumpPossible();
-				return;
-			}
-			if (vertical == "down" && horizontal == "left") {
-				tiles[move[0] + 1][move[1] - 1] = BROWN_SPACE;
-				swapTiles(move[0], move[1], move[2], move[3]);
-				isAnotherJumpPossible();
-				return;
-
-			}
-		}
+	public void jump(int horizontal, int vertical) {
+		tiles[(move[0] + move[2]) / 2][(move[1] + move[3]) / 2] = BROWN_SPACE;
+		swapTiles(move[0], move[1], move[2], move[3]);
+		isAnotherJumpPossible(vertical, horizontal);
 	}
 
-	public boolean isAnotherJumpPossible() {
-
+	// BUGGGGGS McGoo :(
+	public boolean isAnotherJumpPossible(int horizontal, int vertical) {
 		if (turn == BLACK) {
+			if (peekTile(vertical, horizontal) == RED) {
+				if (peekTile(vertical * 2, horizontal * 2) == BROWN_SPACE) {
 
+					return true;
+				}
+			}
+			if (peekTile(vertical, (horizontal) * -1) == RED) {
+				if (peekTile(vertical * 2, (horizontal * 2) * -1) == BROWN_SPACE) {
+
+					return true;
+				}
+			}
 		}
 		if (turn == RED) {
+			if (move[2] + horizontal == RED && move[3] + vertical == BLACK) {
+				if (move[2] + (horizontal * 2) == BROWN_SPACE && move[3] + (vertical * 2) == BROWN_SPACE) {
+					return true;
+				}
+			}
 		}
 		turn();
 		return false;
+	}
+
+	public int peekTile(int vertical, int horizontal) {
+		try {
+			int tileValue = tiles[move[2] + horizontal][move[3] + vertical];
+			return tileValue;
+			// Peeks a tile that doesn't exist
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return -1;
+		}
+
 	}
 
 	// Every time this is called, it switches turns
