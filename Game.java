@@ -7,10 +7,15 @@ public class Game {
 	int[] move = new int[4];
 	boolean firstClick = true;
 	boolean turnEnd = false;
+	boolean secondJump = false;
 	int turn = 2;
 
-	final int UP_ONE = 1;
-	final int DOWN_ONE = -1;
+	final int JUMP_LEFT = -2;
+	final int JUMP_RIGHT = 2;
+	final int JUMP_UP = -2;
+	final int JUMP_DOWN = 2;
+	final int DOWN_ONE = 1;
+	final int UP_ONE = -1;
 	final int RIGHT_ONE = 1;
 	final int LEFT_ONE = -1;
 	final int BLACK = 2;
@@ -83,10 +88,13 @@ public class Game {
 				move[3] = y;
 				firstClick = true;
 				// Goes through to determine what the player did that move
-				isMoveValid();
+				if (secondJump==false) {
+					isMoveValid();
+				}
 				isJumpValid();
-				checkForKing();
-				kingMove();
+				if (secondJump==false) {
+					kingMove();
+				}
 			}
 		}
 	}
@@ -109,18 +117,20 @@ public class Game {
 
 	public void kingMove() {
 		if (turn == BLACK && tiles[move[0]][move[1]] == BLACK_KING) {
-			if (move[0] == (move[2] + UP_ONE) || move[0] == (move[2] + DOWN_ONE)) {
+			if (move[0] == (move[2] + DOWN_ONE) || move[0] == (move[2] + UP_ONE)) {
 				if ((move[1] == (move[3] + LEFT_ONE)) || (move[1] == (move[3] + RIGHT_ONE))) {
 					turnEnd = true;
 					swapTiles(move[0], move[1], move[2], move[3]);
+					turn();
 				}
 			}
 		}
 		if (turn == RED && tiles[move[0]][move[1]] == RED_KING) {
-			if (move[0] == (move[2] + UP_ONE) || move[0] == (move[2] + DOWN_ONE)) {
+			if (move[0] == (move[2] + DOWN_ONE) || move[0] == (move[2] + UP_ONE)) {
 				if ((move[1] == (move[3] + LEFT_ONE)) || (move[1] == (move[3] + RIGHT_ONE))) {
 					turnEnd = true;
 					swapTiles(move[0], move[1], move[2], move[3]);
+					turn();
 				}
 			}
 		}
@@ -131,12 +141,14 @@ public class Game {
 		// Checks to see if BLACK player clicks a BLACK checker
 		if (turn == BLACK && tiles[move[0]][move[1]] == BLACK) {
 			// Checks if BLACK player's second click 1 row above
-			if (move[0] == (move[2] + UP_ONE)) {
+			if (move[0] == (move[2] + DOWN_ONE)) {
 				// Checks to see if the BLACK player's second click is diagonal
 				// of the first click
 				if ((move[1] == (move[3] + LEFT_ONE)) || (move[1] == (move[3] + RIGHT_ONE))) {
 					turnEnd = true;
 					swapTiles(move[0], move[1], move[2], move[3]);
+					checkForKing();
+					turn();
 					return true;
 				}
 			}
@@ -145,12 +157,14 @@ public class Game {
 		// Checks to see if RED player clicks a RED checker
 		if (turn == RED && tiles[move[0]][move[1]] == RED) {
 			// Checks if RED player's second click 1 row down
-			if (move[0] == (move[2] + DOWN_ONE)) {
+			if (move[0] == (move[2] + UP_ONE)) {
 				// Checks to see if the RED player's second click is diagonal of
 				// the first click
 				if ((move[1] == (move[3] + LEFT_ONE)) || (move[1] == (move[3] + RIGHT_ONE))) {
 					turnEnd = true;
 					swapTiles(move[0], move[1], move[2], move[3]);
+					checkForKing();
+					turn();
 					return true;
 				}
 			}
@@ -166,8 +180,7 @@ public class Game {
 			if (move[0] > move[2] && move[1] < move[3]) {
 				if (tiles[move[0] - 1][move[1] + 1] == RED || tiles[move[0] - 1][move[1] + 1] == RED_KING) {
 					if (move[0] == move[2] + 2 && move[1] == move[3] - 2 && tiles[move[2]][move[3]] == BROWN_SPACE) {
-						System.out.println("upright");
-						jump("up", "right");
+						jump(RIGHT_ONE, UP_ONE);
 					}
 				}
 			}
@@ -175,8 +188,7 @@ public class Game {
 			if (move[0] > move[2] && move[1] > move[3]) {
 				if (tiles[move[0] - 1][move[1] - 1] == RED || tiles[move[0] - 1][move[1] - 1] == RED_KING) {
 					if (move[0] == move[2] + 2 && move[1] == move[3] + 2 && tiles[move[2]][move[3]] == BROWN_SPACE) {
-						System.out.println("upleft");
-						jump("up", "left");
+						jump(LEFT_ONE, UP_ONE);
 					}
 				}
 			}
@@ -185,8 +197,7 @@ public class Game {
 				if (move[0] < move[2] && move[1] < move[3]) {
 					if (tiles[move[0] + 1][move[1] + 1] == RED || tiles[move[0] + 1][move[1] + 1] == RED_KING) {
 						if (move[0] + 2 == move[2] && move[1] + 2 == move[3]) {
-
-							jump("down", "right");
+							jump(RIGHT_ONE, DOWN_ONE);
 						}
 					}
 				}
@@ -197,7 +208,7 @@ public class Game {
 					if (tiles[move[0] + 1][move[1] - 1] == RED || tiles[move[0] + 1][move[1] - 1] == RED_KING) {
 						if (move[0] + 2 == move[2] && move[1] - 2 == move[3]
 								&& tiles[move[2]][move[3]] == BROWN_SPACE) {
-							jump("down", "left");
+							jump(LEFT_ONE, DOWN_ONE);
 						}
 					}
 				}
@@ -211,7 +222,7 @@ public class Game {
 					if (tiles[move[0] - 1][move[1] + 1] == BLACK || tiles[move[0] - 1][move[1] + 1] == BLACK_KING) {
 						if (move[0] - 2 == move[2] && move[1] + 2 == move[3]
 								&& tiles[move[2]][move[3]] == BROWN_SPACE) {
-							jump("up", "right");
+							jump(RIGHT_ONE, UP_ONE);
 						}
 					}
 				}
@@ -222,7 +233,7 @@ public class Game {
 					if (tiles[move[0] - 1][move[1] - 1] == BLACK || tiles[move[0] - 1][move[1] - 1] == BLACK_KING) {
 						if (move[0] - 2 == move[2] && move[1] - 2 == move[3]
 								&& tiles[move[2]][move[3]] == BROWN_SPACE) {
-							jump("up", "left");
+							jump(LEFT_ONE, UP_ONE);
 						}
 					}
 				}
@@ -231,8 +242,7 @@ public class Game {
 			if (move[0] < move[2] && move[1] < move[3]) {
 				if (tiles[move[0] + 1][move[1] + 1] == BLACK || tiles[move[0] + 1][move[1] + 1] == BLACK_KING) {
 					if (move[0] + 2 == move[2] && move[1] + 2 == move[3] && tiles[move[2]][move[3]] == BROWN_SPACE) {
-
-						jump("down", "right");
+						jump(RIGHT_ONE, DOWN_ONE);
 					}
 				}
 			}
@@ -241,7 +251,7 @@ public class Game {
 			if (move[0] < move[2] && move[1] > move[3]) {
 				if (tiles[move[0] + 1][move[1] - 1] == BLACK || tiles[move[0] + 1][move[1] - 1] == BLACK_KING) {
 					if (move[0] + 2 == move[2] && move[1] - 2 == move[3] && tiles[move[2]][move[3]] == BROWN_SPACE) {
-						jump("down", "left");
+						jump(LEFT_ONE, DOWN_ONE);
 					}
 				}
 			}
@@ -249,61 +259,101 @@ public class Game {
 		return false;
 	}
 
-	public void jump(String vertical, String horizontal) {
-		if (turn == BLACK) {
-			if (vertical == "up" && horizontal == "left") {
-				tiles[move[0] - 1][move[1] - 1] = BROWN_SPACE;
-				tiles[move[0] - 2][move[1] - 2] = BLACK;
-				tiles[move[0]][move[1]] = BROWN_SPACE;
-			}
-			if (vertical == "up" && horizontal == "right") {
-				tiles[move[0] - 1][move[1] + 1] = BROWN_SPACE;
-				tiles[move[0] - 2][move[1] + 2] = BLACK;
-				tiles[move[0]][move[1]] = BROWN_SPACE;
-			}
-			if (vertical == "down" && horizontal == "right") {
-				tiles[move[0] + 1][move[1] + 1] = BROWN_SPACE;
-				tiles[move[0] + 2][move[1] + 2] = BLACK_KING;
-				tiles[move[0]][move[1]] = BROWN_SPACE;
-			}
-			if (vertical == "down" && horizontal == "left") {
-				tiles[move[0] + 1][move[1] - 1] = BROWN_SPACE;
-				tiles[move[0] + 2][move[1] - 2] = BLACK_KING;
-				tiles[move[0]][move[1]] = BROWN_SPACE;
-			}
-		}
-		if (turn == RED) {
-			if (vertical == "up" && horizontal == "left") {
-				tiles[move[0] - 1][move[1] - 1] = BROWN_SPACE;
-				tiles[move[0] - 2][move[1] - 2] = RED_KING;
-				tiles[move[0]][move[1]] = BROWN_SPACE;
-			}
-			if (vertical == "up" && horizontal == "right") {
-				tiles[move[0] - 1][move[1] + 1] = BROWN_SPACE;
-				tiles[move[0] - 2][move[1] + 2] = RED_KING;
-				tiles[move[0]][move[1]] = BROWN_SPACE;
-			}
-			if (vertical == "down" && horizontal == "right") {
-				tiles[move[0] + 1][move[1] + 1] = BROWN_SPACE;
-				tiles[move[0] + 2][move[1] + 2] = RED;
-				tiles[move[0]][move[1]] = BROWN_SPACE;
-			}
-			if (vertical == "down" && horizontal == "left") {
-				tiles[move[0] + 1][move[1] - 1] = BROWN_SPACE;
-				tiles[move[0] + 2][move[1] - 2] = RED;
-				tiles[move[0]][move[1]] = BROWN_SPACE;
+	public void jump(int horizontal, int vertical) {
+		tiles[(move[0] + move[2]) / 2][(move[1] + move[3]) / 2] = BROWN_SPACE;
+		swapTiles(move[0], move[1], move[2], move[3]);
+		checkForKing();
+		isjumpavailable(tiles[move[2]][move[3]]);			
+	}
 
-			}
+	public boolean isjumpavailable(int color){
+		if (color == BLACK  || color ==BLACK_KING){
+			try{
+				if(tiles[move[2]-1][move[3]+1] == RED ||tiles[move[2]-1][move[3]+1] == RED_KING){
+					if(tiles[move[2]-2][move[3]+2] == BROWN_SPACE){
+						secondJump = true;
+						return true;
+					}
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {}
+			try{
+				if(tiles[move[2]-1][move[3]-1] == RED ||tiles[move[2]-1][move[3]-1] == RED_KING){
+					if(tiles[move[2]-2][move[3]-2] == BROWN_SPACE){
+						secondJump = true;
+						return true;
+					}
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {}
 		}
+		if (color ==BLACK_KING){
+			try{
+				if(tiles[move[2]+1][move[3]+1] == RED ||tiles[move[2]+1][move[3]+1] == RED_KING){
+					if(tiles[move[2]+2][move[3]+2] == BROWN_SPACE){
+						secondJump = true;
+						return true;
+					}
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {}
+			try{
+				if(tiles[move[2]+1][move[3]-1] == RED ||tiles[move[2]+1][move[3]-1] == RED_KING){
+					if(tiles[move[2]+2][move[3]-2] == BROWN_SPACE){
+						secondJump = true;
+						return true;
+					}
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {}
+		}
+		
+		if (color == RED  || color ==RED_KING){
+			try{
+				if(tiles[move[2]+1][move[3]+1] == BLACK ||tiles[move[2]+1][move[3]+1] == BLACK_KING){
+					if(tiles[move[2]+2][move[3]+2] == BROWN_SPACE){
+						secondJump = true;
+						return true;
+					}
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {}
+			try {
+				if(tiles[move[2]+1][move[3]-1] == BLACK ||tiles[move[2]+1][move[3]-1] == BLACK_KING){
+					if(tiles[move[2]+2][move[3]-2] == BROWN_SPACE){
+						secondJump = true;
+						return true;
+					}
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {}
+		}
+		if (color == RED_KING){
+			try {
+				if(tiles[move[2]-1][move[3]+1] == BLACK ||tiles[move[2]-1][move[3]+1] == BLACK_KING){
+					if(tiles[move[2]-2][move[3]+2] == BROWN_SPACE){
+						secondJump = true;
+						return true;
+					}
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {}
+			
+			try {
+			if(tiles[move[2]-1][move[3]-1] == BLACK ||tiles[move[2]-1][move[3]-1] == BLACK_KING){
+				if(tiles[move[2]-2][move[3]-2] == BROWN_SPACE){
+					secondJump = true;
+					return true;
+				}
+			}
+			} catch (ArrayIndexOutOfBoundsException e) {}
+		}
+		turn();
+		return false;
 	}
 
 	// Every time this is called, it switches turns
 	public void turn() {
 		if (turn == BLACK) {
 			turnEnd = false;
+			secondJump = false;
 			turn = RED;
 		} else {
 			turnEnd = false;
+			secondJump = false;
 			turn = BLACK;
 		}
 	}

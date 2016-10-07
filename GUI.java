@@ -19,7 +19,6 @@ public class GUI extends JPanel {
 	private Game game;
 	private JLabel currentTurnLabel;
 	private JLabel currentTurn = new JLabel();
-	private JButton endTurn;
 
 	public GUI() {
 
@@ -29,20 +28,18 @@ public class GUI extends JPanel {
 		tiles = new JButton[8][8];
 		JFrame frame = new JFrame("Checkers");
 		JPanel panel = new JPanel();
-		JPanel endTurnPanel = new JPanel();
 		JPanel currentTurnPanel = new JPanel();
 		ButtonListener listener = new ButtonListener();
 		currentTurnLabel = new JLabel("Current Turn: ");
 		currentTurn = new JLabel(game.getTurn());
 		GridLayout gridLayout = new GridLayout(8, 8);
-		endTurn = new JButton("End Turn");
 		panel.setLayout(gridLayout);
 
 		// assigns colored tiles to button's value
 		imageIcon = new ImageIcon[6];
 		for (int tileValue = 0; tileValue < 6; tileValue++) {
 			imageIcon[tileValue] = new ImageIcon(
-					"C:/Users/Jacob/workspace/Checkers/src/checkers/tiles/" + tileValue + ".jpg");
+					"C:/Users/Brandon/Documents/School/Spring2015/CIS163/Workspace/Checkers/" + tileValue + ".jpg");
 		}
 
 		// nested loop to add the 2d array of buttons
@@ -52,7 +49,6 @@ public class GUI extends JPanel {
 				tiles[x][y].setIcon(imageIcon[game.getTile(x, y)]);
 				tiles[x][y].addActionListener(listener);
 				panel.add(tiles[x][y]);
-
 			}
 		}
 
@@ -60,17 +56,12 @@ public class GUI extends JPanel {
 		currentTurnPanel.add(currentTurnLabel);
 		currentTurnPanel.add(currentTurn);
 
-		// Adds the components to the endTurnPanel
-		endTurnPanel.add(endTurn);
-		endTurn.addActionListener(listener);
-
 		// necessary frame properties
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800, 800);
 		frame.add(panel);
 		frame.add(currentTurnPanel, BorderLayout.NORTH);
-		frame.add(endTurnPanel, BorderLayout.EAST);
 		frame.setResizable(false);
 	}
 
@@ -91,12 +82,6 @@ public class GUI extends JPanel {
 					}
 				}
 			}
-
-			if (endTurn == event.getSource()) {
-				game.turn();
-				currentTurn.setText(game.getTurn());
-			}
-
 		}
 
 		// Reloads the board UI after every click
