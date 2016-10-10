@@ -1,12 +1,18 @@
 //GUI
-
+//new
 package checkers;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,7 +26,10 @@ public class GUI extends JPanel {
 	private JLabel currentTurnLabel;
 	private JLabel currentTurn = new JLabel();
 
-	public GUI() {
+	private BufferedImage image;
+	Graphics2D g2;
+	
+	public GUI(Color color1, Color color2) {
 
 		game = new Game();
 
@@ -39,8 +48,11 @@ public class GUI extends JPanel {
 		imageIcon = new ImageIcon[6];
 		for (int tileValue = 0; tileValue < 6; tileValue++) {
 			imageIcon[tileValue] = new ImageIcon(
-					"C:/Users/Brandon/Documents/School/Spring2015/CIS163/Workspace/Checkers/" + tileValue + ".jpg");
+					"C:/Users/Nick/workspace/Checkers_New/src/checkers/tiles/" + tileValue + ".jpg");
 		}
+		
+		changeColors(2, color1);  //changes checkers to match players' selected colors
+		changeColors(3, color2);
 
 		// nested loop to add the 2d array of buttons
 		for (int x = 0; x < 8; x++) {
@@ -64,9 +76,10 @@ public class GUI extends JPanel {
 		frame.add(currentTurnPanel, BorderLayout.NORTH);
 		frame.setResizable(false);
 	}
-
-	public static void main(String[] args) {
-		new GUI();
+	
+	// takes players' selected colors and sets up board
+	public static void change(Color col1, Color col2) {
+		new GUI(col1,col2);
 	}
 
 	private class ButtonListener implements ActionListener {
@@ -92,6 +105,24 @@ public class GUI extends JPanel {
 				}
 			}
 		}
-
+	}
+	
+	private BufferedImage getImage(String filename) {
+		try {                
+			InputStream input = getClass().getResourceAsStream(filename);
+		    return ImageIO.read(input);
+		} catch (IOException e) {
+		    System.out.println("The image was not loaded.");
+		}
+		return null;
+	}
+	
+	public void changeColors(int playerNum, Color col) {
+		// change colors for tile png
+		image = getImage("tiles/"+ playerNum + ".jpg");
+		g2 = image.createGraphics();
+		g2.setColor(col);
+		g2.fillOval(0, 0, 100, 100);
+		imageIcon[playerNum] = new ImageIcon(image);		
 	}
 }

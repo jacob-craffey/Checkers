@@ -2,6 +2,14 @@
 
 package checkers;
 
+import java.io.File;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+
 public class Game {
 	int[][] tiles = new int[8][8];
 	int[] move = new int[4];
@@ -25,6 +33,9 @@ public class Game {
 	final int GREY_SPACE = 0;
 	final int BROWN_SPACE = 1;
 	final int BOARD_DIMENSION = 8;
+	
+	String jumpSoundFile = "C:/Users/Nick/workspace/Checkers_New/src/checkers/sounds/jump.wav";
+	String kingSoundFile = "C:/Users/Nick/workspace/Checkers_New/src/checkers/sounds/king.wav";
 
 	public Game() {
 		// Sets up the gameboard
@@ -104,12 +115,14 @@ public class Game {
 			for (int scanTopRow = 0; scanTopRow < BOARD_DIMENSION; scanTopRow++) {
 				if (tiles[0][scanTopRow] == BLACK) {
 					tiles[0][scanTopRow] = BLACK_KING;
+					playSound(kingSoundFile);
 				}
 			}
 		} else if (turn == RED) {
 			for (int scanBottomRow = 0; scanBottomRow < BOARD_DIMENSION; scanBottomRow++) {
 				if (tiles[7][scanBottomRow] == RED) {
 					tiles[7][scanBottomRow] = RED_KING;
+					playSound(kingSoundFile);
 				}
 			}
 		}
@@ -263,7 +276,8 @@ public class Game {
 		tiles[(move[0] + move[2]) / 2][(move[1] + move[3]) / 2] = BROWN_SPACE;
 		swapTiles(move[0], move[1], move[2], move[3]);
 		checkForKing();
-		isjumpavailable(tiles[move[2]][move[3]]);			
+		isjumpavailable(tiles[move[2]][move[3]]);
+		playSound(jumpSoundFile);
 	}
 
 	public boolean isjumpavailable(int color){
@@ -373,6 +387,20 @@ public class Game {
 			for (int y = 0; y < 8; y++) {
 				System.out.print(tiles[x][y]);
 			}
+		}
+	}
+	
+	public void playSound(String fileName) {
+		try{
+			File soundFile = new File(fileName);
+			AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
+			AudioFormat audioFormat = audioStream.getFormat();
+			DataLine.Info info = new DataLine.Info(Clip.class, audioFormat);
+			Clip clip = (Clip) AudioSystem.getLine(info);
+			clip.open(audioStream);
+			clip.start();
+		} catch(Exception cantFindFile) {
+			System.out.println("can't find WAV file");
 		}
 	}
 }
