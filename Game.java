@@ -276,6 +276,7 @@ public class Game {
 		tiles[(move[0] + move[2]) / 2][(move[1] + move[3]) / 2] = BROWN_SPACE;
 		swapTiles(move[0], move[1], move[2], move[3]);
 		checkForKing();
+		playerWon();
 		isjumpavailable(tiles[move[2]][move[3]]);
 		playSound(jumpSoundFile);
 	}
@@ -388,6 +389,35 @@ public class Game {
 				System.out.print(tiles[x][y]);
 			}
 		}
+	}
+	
+	public void playerWon() {
+		int noWinner = 0;
+		int blackCheckers = 0;
+		int redCheckers = 0;
+		
+		for (int x = 0; x < 8; x++) {
+			for (int y = 0; y < 8; y++) {
+				if((tiles[x][y] == BLACK) || ((tiles[x][y] == BLACK_KING))) {
+					blackCheckers = 1; // At least 1 Black checker still exists
+				}
+				if( (tiles[x][y] == RED) || (tiles[x][y] == RED_KING) ) {
+					redCheckers = 1; // At least 1 Red checker still exists
+				}
+			}
+		}
+		
+		if((blackCheckers == 1) && (redCheckers == 0)) {
+			DisplayWinner.display("Player 1 Wins!");
+		}
+			//return BLACK; // black won
+		else if((blackCheckers == 0) && (redCheckers == 1)) {
+			DisplayWinner.display("Player 2 Wins!");
+		}
+			//return RED; // black won
+		/*else {
+			return noWinner; // nobody won
+		}*/
 	}
 	
 	public void playSound(String fileName) {
