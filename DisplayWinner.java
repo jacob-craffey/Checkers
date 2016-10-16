@@ -9,9 +9,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * @author Brandon Griggs, Jacob Craffey, Nick Frein 
+ * 
+ * Class for displaying the winner of the checkers game.
+ * When called, it will create a window displaying who won.
+ */
 public class DisplayWinner {
   
-  /** Creates a window that displays who won the game. **/
+  /** 
+   * Creates a window that displays who won the game. 
+   * 
+   * @param winner  a string indicating who won.
+   **/
   public static void display(String winner) {
 
     JFrame frame3 = new JFrame("Winner");

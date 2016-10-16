@@ -1,4 +1,8 @@
-//game
+/**
+ * Authors: Brandon Griggs, Jacob Craffey, Nick Frein 
+ * Checkers game. This class holds the executable commands for carrying 
+ * out a game of checkers. 
+ */
 
 package checkers;
 
@@ -10,10 +14,12 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 
-/**  Sets up the game. **/
+/** 
+ *  Class of setting up and executing the game. 
+ **/
 public class Game {
     
-  int[][] tiles = new int[8][8];
+int[][] tiles = new int[8][8];
   int[] move = new int[4];
   boolean firstClick = true;
   boolean turnEnd = false;
@@ -36,10 +42,12 @@ public class Game {
   final int brownSpace = 1;
   final int boardDimension = 8;
 
-  String jumpSoundFile = "C:/Users/Nick/workspace/Checkers_New/src/checkers/sounds/jump.wav";
-  String kingSoundFile = "C:/Users/Nick/workspace/Checkers_New/src/checkers/sounds/king.wav";
+  String jumpSoundFile = "./src/checkers/sounds/jump.wav";
+  String kingSoundFile = "./src/checkers/sounds/king.wav";
 
-  /** Sets up the gameboard. **/
+  /** 
+   * Sets up the game board. 
+   **/
   public Game() {
     for (int x = 0; x < boardDimension; x++) {
       for (int y = 0; y < boardDimension; y++) {
@@ -58,12 +66,24 @@ public class Game {
     }
   }
 
-  /** Gets tiles x and y's contents. **/
+  /** 
+   * Gets tiles x and y's contents.
+   * 
+   * @param xtile  x-coordinate of the tile
+   * @param ytile  y-coordinate of the tile
+   * @return  The tile indicated by the coordinates
+   * @see int
+   **/
   public int getTile(int xtile, int ytile) {
     return tiles[xtile][ytile];
   }
 
-  /** Returns string used to determine player's turn. **/
+  /** 
+   * method used to determine player's turn. 
+   * 
+   * @return  String of the color whose turn it is.
+   * @see  String
+   **/
   public String getTurn() {
     if (turn == black) {
       return ("BLACK");
@@ -72,15 +92,21 @@ public class Game {
     }
   }
 
-  /** Sets the moves in an array. First two addresses are for the first
-  move's dimensions and the second two are for the second move's
-  dimensions. **/
+  /** 
+   * Sets the moves in an array. First two addresses are for the first
+   * move's dimensions and the second two are for the second move's
+   * dimensions.
+   * 
+   *  @param xtile  x-coordinate of the move
+   *  @param ytile  y-coordinate of the move
+   **/
   public void setMove(int xtile, int ytile) {
     if (turnEnd == false) {
       if (firstClick) {
         // Restarts player's turn if they clicked an empty tile on first
         // click.
-        if (tiles[xtile][ytile] == greySpace || tiles[xtile][ytile] == brownSpace) {
+        if (tiles[xtile][ytile] == greySpace 
+        		|| tiles[xtile][ytile] == brownSpace) {
           return;
         }
         // If correct, store the first click values
@@ -114,8 +140,10 @@ public class Game {
     }
   }
 
-  /** If a checker reaches the top or bottom of the checkers board
-  it becomes a king. **/
+  /** 
+   * Checks the board for kings, looking for checkers of opposite colors
+   * on the top or bottom of the board.
+   */
   public void checkForKing() {
     if (turn == black) {
       for (int scanTopRow = 0; scanTopRow < boardDimension; scanTopRow++) {
@@ -134,8 +162,10 @@ public class Game {
     }
   }
 
-  /** King pieces can move diagnally in any direction.
-   * tiles are swapped when a move is made. **/
+  /** 
+   * Method for moving the king. King pieces can move diagonally
+   * in any direction. Tiles are swapped when a move is made. 
+   **/
   public void kingMove() {
     if (turn == black && tiles[move[0]][move[1]] == blackKing) {
       if (move[0] == (move[2] + downOne) || move[0] == (move[2] + upOne)) {
@@ -157,7 +187,12 @@ public class Game {
     }
   }
 
-  /** Checks if the player clicked on a tile that is diagonal from their piece. **/
+  /** 
+   * Checks if the player clicked on a tile that is diagonal from their piece. 
+   * 
+   * @return  true or false for if it is a valid move.
+   * @see boolean
+   **/
   public boolean isMoveValid() {
     // Checks to see if BLACK player clicks a BLACK checker
     if (turn == black && tiles[move[0]][move[1]] == black) {
@@ -195,9 +230,14 @@ public class Game {
     return false;
   }
 
-  /** Checks if the player clicks a tile that is two diagonal tiles away from 
-   * their checker, it's empty, and has an enemy checker in between. If this is true,
-   * the player can jump. **/
+  /** 
+   * Checks if the player clicks a tile that is two diagonal tiles away from 
+   * their checker, it's empty, and has an enemy checker in between. If this
+   * is true, the player can jump.
+   * 
+   * @return  true of false for if the player made a valid jump
+   * @see boolean 
+   **/
   public boolean isJumpValid() {
     if (turn == black) {
       // up right
@@ -294,7 +334,16 @@ public class Game {
     return false;
   }
   
-  /** If a jump is made, the tiles are swapped and the enemy checker is removed. **/
+  /** 
+   * Method for jumping checkers. If a jump is made, the tiles are 
+   * swapped and the enemy checker is removed. Also includes sound
+   * and checks if the jump cause a player to win the game. 
+   * 
+   * @param horizontal  The horizontal direction the player wants
+   * 					to jump, positive of negative
+   * @param vertical  The vertical direction the player wants 
+   * 					to jump, positive of negative
+   **/
   public void jump(int horizontal, int vertical) {
     tiles[(move[0] + move[2]) / 2][(move[1] + move[3]) / 2] = brownSpace;
     swapTiles(move[0], move[1], move[2], move[3]);
@@ -304,8 +353,14 @@ public class Game {
     playSound(jumpSoundFile);
   }
 
-  /** checks if player's checker can jump over another enemy checker.
-   *  The player has to keep jumping as long as another move is possible **/
+  /** 
+   *  Checks if player's checker can jump over another enemy checker.
+   *  The player has to keep jumping as long as another move is possible.
+   *  
+   *   @param color  the color of the player who is trying to jump
+   *   @return true or false for if the jump is valid
+   *   @see boolean
+   **/
   public boolean isjumpavailable(int color) {
     if (color == black || color == blackKing) {
       try {
@@ -409,7 +464,10 @@ public class Game {
     return false;
   }
 
-  /** Every time this is called, it switches turns. **/
+  /**
+   * Method for switching turns. Every time this is called,
+   * it switches turns. 
+   **/
   public void turn() {
     if (turn == black) {
       turnEnd = false;
@@ -422,7 +480,14 @@ public class Game {
     }
   }
 
-  /** Swaps the two values of the tiles for a normal move. **/
+  /** 
+   * Swaps the two values of the tiles for a normal move.
+   * 
+   *  @param firstX  The x value of the starting location
+   *  @param firstY  The y value of the starting location
+   *  @param secondX  The x value for the ending location
+   *  @param secondY  The y value for the 
+   **/
   public void swapTiles(int firstX, int firstY, int secondX, int secondY) {
     int tempTileValue = tiles[firstX][firstY];
 
@@ -440,8 +505,10 @@ public class Game {
     }
   }
 
-  /** Checks if either player has no checkers left. 
-   * Sends winner message to DisplayWindow(). **/
+  /** 
+   * Checks if either player has no checkers left. 
+   * Sends winner message to DisplayWindow(). 
+   **/
   public void playerWon() {
     //int noWinner = 0;
     int blackCheckers = 0;
@@ -465,7 +532,11 @@ public class Game {
     }
   }
 
-  /** Looks for sound file. Plays WAV files. **/
+  /** 
+   * Looks for sound file. If found, plays WAV file. 
+   * 
+   * @param fileName  The name of the WAV file you want to open
+   **/
   public void playSound(String fileName) {
     try {
       File soundFile = new File(fileName);

@@ -1,6 +1,11 @@
+/**
+ * Authors: Brandon Griggs, Jacob Craffey, Nick Frein 
+ * GUI for checkers game. Sets up the game board and visual
+ * presentation of the game.
+ **/
 package checkers;
 
-import java.awt.BorderLayout;
+import java.awt.BorderLayout; 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -18,18 +23,42 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
+
+/**
+ * Gui class for checkers game. Sets up the board, sets up the images
+ * associated with the board, and changes player's colors. 
+ **/
 public class Gui extends JPanel {
-  private JButton[][] tiles;
+  /**2d array of buttons that represent the tiles of the game board.**/
+  private JButton[][] tiles; 
+  /**Array of the images used in the game.**/
   private ImageIcon[] imageIcon;
+  /**The game of checkers.**/
   private Game game;
+  /** Label for displaying player of the current turn.**/
   private JLabel currentTurnLabel;
+  /** Label for displaying the player currently in their turn.**/
   private JLabel currentTurn = new JLabel();
-
+  /**Used for images in the game.**/
   private BufferedImage image;
-  Graphics2D g2;
-
-  /** Creates window that displays checkers board. **/
-  public Gui(Color color1, Color color2) {
+  /**Used to draw over checkers so player can pick their color.**/
+  private Graphics2D g2;
+  
+  
+/**
+ * default constructor for Gui Class.
+ */
+  public Gui() {
+	  change(Color.RED, Color.BLACK);
+  }
+/**
+ * Creates Window that displays checkers board.
+ * 
+ * @param color1  the color of player 1
+ * @param color2  the color of player 2
+ **/
+ 
+  public Gui(final Color color1, final Color color2) {
     game = new Game();
 
     // Sets up necessary elements for interface
@@ -47,10 +76,10 @@ public class Gui extends JPanel {
     imageIcon = new ImageIcon[6];
     for (int tileValue = 0; tileValue < 6; tileValue++) {
       imageIcon[tileValue] = new ImageIcon(
-          "C:/Users/Nick/workspace/Checkers_New/src/checkers/tiles/" + tileValue + ".jpg");
+          "./src/checkers/tiles/" + tileValue + ".jpg");
     }
-
-    changeColors(2, color1);  //changes checkers to match players' selected colors
+    //changes checkers to match players' selected colors
+    changeColors(2, color1);
     changeColors(3, color2);
 
     // nested loop to add the 2d array of buttons
@@ -76,11 +105,21 @@ public class Gui extends JPanel {
     frame.setResizable(false);
   }
 
-  // takes players' selected colors and sets up board
-  public static void change(Color col1, Color col2) {
+/**
+ * Helper method that changes the colors of the checkers on the
+ * board by passing them as a parameter in the constructor.
+ * 
+ * @param col1 	Color of player1
+ * @param col2  Color of player2
+ **/
+  public static void change(final Color col1, final Color col2) {
     new Gui(col1,col2);
   }
 
+ /**
+  * Button listener that listens to the clicks on the game board and
+  * sets moves accordingly. 
+  **/
   private class ButtonListener implements ActionListener {
 
     public void actionPerformed(ActionEvent event) {
@@ -95,7 +134,9 @@ public class Gui extends JPanel {
       }
     }
 
-    // Reloads the board UI after every click
+ /**
+  *  Reloads the board UI after every click.
+  **/
     public void reloadBoard() {
       for (int x = 0; x < 8; x++) {
         for (int y = 0; y < 8; y++) {
@@ -104,7 +145,13 @@ public class Gui extends JPanel {
       }
     }
   }
-
+/**
+ * Grabs an image from a given filename.
+ * 
+ * @param filename  The name of the file you would like to open
+ * @return  The image that was grabbed 
+ * @see BufferedImage
+ **/
   private BufferedImage getImage(String filename) {
     try {                
       InputStream input = getClass().getResourceAsStream(filename);
@@ -115,7 +162,13 @@ public class Gui extends JPanel {
     return null;
   }
 
-  /** Colored circles are placed over the tiles containing checkers. **/
+/**
+ * Colored circles are placed over the existing tiles containing checkers
+ * to match the player's selected colors.
+ * 
+ * @param playerNum  The number of the player whose color you want to change.
+ * @param col  The color the checkers will be switching too.
+ **/
   public void changeColors(int playerNum, Color col) {
     // change colors for tile png
     image = getImage("tiles/" + playerNum + ".jpg");
