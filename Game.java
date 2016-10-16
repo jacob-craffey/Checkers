@@ -7,6 +7,7 @@ public class Game {
 	int[] move = new int[4];
 	boolean firstClick = true;
 	boolean turnEnd = false;
+	boolean secondJump = false;
 	int turn = 2;
 
 	final int JUMP_LEFT = -2;
@@ -87,10 +88,13 @@ public class Game {
 				move[3] = y;
 				firstClick = true;
 				// Goes through to determine what the player did that move
-				isMoveValid();
+				if (secondJump == false) {
+					isMoveValid();
+				}
 				isJumpValid();
-				checkForKing();
-				kingMove();
+				if (secondJump == false) {
+					kingMove();
+				}
 			}
 		}
 	}
@@ -117,6 +121,7 @@ public class Game {
 				if ((move[1] == (move[3] + LEFT_ONE)) || (move[1] == (move[3] + RIGHT_ONE))) {
 					turnEnd = true;
 					swapTiles(move[0], move[1], move[2], move[3]);
+					turn();
 				}
 			}
 		}
@@ -125,6 +130,7 @@ public class Game {
 				if ((move[1] == (move[3] + LEFT_ONE)) || (move[1] == (move[3] + RIGHT_ONE))) {
 					turnEnd = true;
 					swapTiles(move[0], move[1], move[2], move[3]);
+					turn();
 				}
 			}
 		}
@@ -141,6 +147,7 @@ public class Game {
 				if ((move[1] == (move[3] + LEFT_ONE)) || (move[1] == (move[3] + RIGHT_ONE))) {
 					turnEnd = true;
 					swapTiles(move[0], move[1], move[2], move[3]);
+					checkForKing();
 					turn();
 					return true;
 				}
@@ -156,6 +163,7 @@ public class Game {
 				if ((move[1] == (move[3] + LEFT_ONE)) || (move[1] == (move[3] + RIGHT_ONE))) {
 					turnEnd = true;
 					swapTiles(move[0], move[1], move[2], move[3]);
+					checkForKing();
 					turn();
 					return true;
 				}
@@ -254,54 +262,106 @@ public class Game {
 	public void jump(int horizontal, int vertical) {
 		tiles[(move[0] + move[2]) / 2][(move[1] + move[3]) / 2] = BROWN_SPACE;
 		swapTiles(move[0], move[1], move[2], move[3]);
-		isAnotherJumpPossible(vertical, horizontal);
+		checkForKing();
+		isjumpavailable(tiles[move[2]][move[3]]);
 	}
 
-	// BUGGGGGS McGoo :(
-	public boolean isAnotherJumpPossible(int horizontal, int vertical) {
-		if (turn == BLACK) {
-			if (peekTile(vertical, horizontal) == RED) {
-				if (peekTile(vertical * 2, horizontal * 2) == BROWN_SPACE) {
-
-					return true;
+	public boolean isjumpavailable(int color) {
+		if (color == BLACK || color == BLACK_KING) {
+			try {
+				if (tiles[move[2] - 1][move[3] + 1] == RED || tiles[move[2] - 1][move[3] + 1] == RED_KING) {
+					if (tiles[move[2] - 2][move[3] + 2] == BROWN_SPACE) {
+						secondJump = true;
+						return true;
+					}
 				}
+			} catch (ArrayIndexOutOfBoundsException e) {
 			}
-			if (peekTile(vertical, (horizontal) * -1) == RED) {
-				if (peekTile(vertical * 2, (horizontal * 2) * -1) == BROWN_SPACE) {
-
-					return true;
+			try {
+				if (tiles[move[2] - 1][move[3] - 1] == RED || tiles[move[2] - 1][move[3] - 1] == RED_KING) {
+					if (tiles[move[2] - 2][move[3] - 2] == BROWN_SPACE) {
+						secondJump = true;
+						return true;
+					}
 				}
+			} catch (ArrayIndexOutOfBoundsException e) {
 			}
 		}
-		if (turn == RED) {
-			if (move[2] + horizontal == RED && move[3] + vertical == BLACK) {
-				if (move[2] + (horizontal * 2) == BROWN_SPACE && move[3] + (vertical * 2) == BROWN_SPACE) {
-					return true;
+		if (color == BLACK_KING) {
+			try {
+				if (tiles[move[2] + 1][move[3] + 1] == RED || tiles[move[2] + 1][move[3] + 1] == RED_KING) {
+					if (tiles[move[2] + 2][move[3] + 2] == BROWN_SPACE) {
+						secondJump = true;
+						return true;
+					}
 				}
+			} catch (ArrayIndexOutOfBoundsException e) {
+			}
+			try {
+				if (tiles[move[2] + 1][move[3] - 1] == RED || tiles[move[2] + 1][move[3] - 1] == RED_KING) {
+					if (tiles[move[2] + 2][move[3] - 2] == BROWN_SPACE) {
+						secondJump = true;
+						return true;
+					}
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {
+			}
+		}
+
+		if (color == RED || color == RED_KING) {
+			try {
+				if (tiles[move[2] + 1][move[3] + 1] == BLACK || tiles[move[2] + 1][move[3] + 1] == BLACK_KING) {
+					if (tiles[move[2] + 2][move[3] + 2] == BROWN_SPACE) {
+						secondJump = true;
+						return true;
+					}
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {
+			}
+			try {
+				if (tiles[move[2] + 1][move[3] - 1] == BLACK || tiles[move[2] + 1][move[3] - 1] == BLACK_KING) {
+					if (tiles[move[2] + 2][move[3] - 2] == BROWN_SPACE) {
+						secondJump = true;
+						return true;
+					}
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {
+			}
+		}
+		if (color == RED_KING) {
+			try {
+				if (tiles[move[2] - 1][move[3] + 1] == BLACK || tiles[move[2] - 1][move[3] + 1] == BLACK_KING) {
+					if (tiles[move[2] - 2][move[3] + 2] == BROWN_SPACE) {
+						secondJump = true;
+						return true;
+					}
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {
+			}
+
+			try {
+				if (tiles[move[2] - 1][move[3] - 1] == BLACK || tiles[move[2] - 1][move[3] - 1] == BLACK_KING) {
+					if (tiles[move[2] - 2][move[3] - 2] == BROWN_SPACE) {
+						secondJump = true;
+						return true;
+					}
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {
 			}
 		}
 		turn();
 		return false;
 	}
 
-	public int peekTile(int vertical, int horizontal) {
-		try {
-			int tileValue = tiles[move[2] + horizontal][move[3] + vertical];
-			return tileValue;
-			// Peeks a tile that doesn't exist
-		} catch (ArrayIndexOutOfBoundsException e) {
-			return -1;
-		}
-
-	}
-
 	// Every time this is called, it switches turns
 	public void turn() {
 		if (turn == BLACK) {
 			turnEnd = false;
+			secondJump = false;
 			turn = RED;
 		} else {
 			turnEnd = false;
+			secondJump = false;
 			turn = BLACK;
 		}
 	}
