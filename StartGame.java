@@ -13,7 +13,7 @@ public class StartGame {
  * 
  * @param args standard notation
  */
-  public static void main(String [] args) {
+  public static void main(final String [] args) {
     //DisplayWinner.display("Player 1 Wins!");  // test for DisplayWinner window
     new ChooseColor(); // GUI is activated once colors are chosen
   }

@@ -1,13 +1,12 @@
+
 package checkers;
 
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 /**
  * @author Brandon Griggs, Jacob Craffey, Nick Frein 
@@ -16,13 +15,12 @@ import javax.swing.JTextField;
  * When called, it will create a window displaying who won.
  */
 public class DisplayWinner {
-  
-  /** 
-   * Creates a window that displays who won the game. 
-   * 
-   * @param winner  a string indicating who won.
-   **/
-  public static void display(String winner) {
+	  /** 
+	   * Creates a window that displays who won the game. 
+	   * 
+	   * @param winner  a string indicating who won.
+	   **/
+  public static void display(final String winner) {
 
     JFrame frame3 = new JFrame("Winner");
     frame3.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

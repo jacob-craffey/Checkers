@@ -11,15 +11,29 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**suppress a needless warning.**/
 @SuppressWarnings("serial")
+/**
+ * @author Brandon Griggs, Jacob Craffey, Nick Frein 
+ *
+ * Class for letting players choose the color of their liking
+ * for their checkers.
+ */
 public class ChooseColor extends JPanel {
-  Graphics2D g2;
-  Color color1 = Color.RED; 
-  Color color2 = Color.BLUE;
+  /**used to draw different color checkers.**/
+  private Graphics2D g2;
+  /** color of player 1.**/
+  private Color color1 = Color.RED; 
+  /** color of player 2.**/
+  private Color color2 = Color.BLUE;
 
-  /** Creates two drop down windows that let players choose their checkers' colors. **/
+  /**
+   *  Creates two drop down windows that let players choose 
+   *  their checkers' colors. 
+   **/
   public /*Color*/ ChooseColor() {
-    final String[] colors = {"Red","Orange","Yellow","Green","Blue","Purple","Pink","Black"};
+    final String[] colors = {"Red", "Orange", "Yellow", 
+    		"Green", "Blue", "Purple", "Pink", "Black"};
 
     JFrame frame2 = new JFrame("Colors");
     frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,7 +66,7 @@ public class ChooseColor extends JPanel {
 
 
     button.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent pressOk) {
+      public void actionPerformed(final ActionEvent pressOk) {
         if (comboBox.getSelectedIndex() == 0) {
           color1 = Color.RED;
         }
@@ -104,7 +118,7 @@ public class ChooseColor extends JPanel {
         }
 
         //new GUI();
-        Gui.change(color1,color2);
+        Gui.change(color1, color2);
       }
     });
     //return color1;
