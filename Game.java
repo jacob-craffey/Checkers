@@ -581,16 +581,6 @@ public class Game {
     getTiles()[secondX][secondY] = tempTileValue;
   }
 
-  /** Use for debugging purposes only. **/
-  public final void debugCheckRealBoard() {
-    for (int xtile = 0; xtile < EIGHT; xtile++) {
-      System.out.println();
-      for (int ytile = 0; ytile < EIGHT; ytile++) {
-        System.out.print(getTiles()[xtile][ytile]);
-      }
-    }
-  }
-
   /** 
   * Checks if either player has no checkers left. 
   * Sends winner message to DisplayWindow().
