@@ -2,7 +2,6 @@ package checkers;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -11,19 +10,52 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**suppress a needless warning.**/
 @SuppressWarnings("serial")
+/**
+ * @author Brandon Griggs, Jacob Craffey, Nick Frein 
+ *
+ * Class for letting players choose the color of their liking
+ * for their checkers.
+ */
 public class ChooseColor extends JPanel {
-  Graphics2D g2;
-  Color color1 = Color.RED; 
-  Color color2 = Color.BLUE;
+  /** color of player 1.**/
+  private Color color1 = Color.RED; 
+  /** color of player 2.**/
+  private Color color2 = Color.BLUE;
+  
+  /** Integers. **/
+  private static final int ONE = 1;
+  /** Integers. **/
+  private static final int TWO = 2;
+  /** Integers. **/
+  private static final int THREE = 3;
+  /** Integers. **/
+  private static final int FOUR = 4;
+  /** Integers. **/
+  private static final int FIVE = 5;
+  /** Integers. **/
+  private static final int SIX = 6;
+  /** Integers. **/
+  private static final int SEVEN = 7;
+  /** Integers. **/
+  private static final int EIGHT = 8;
+  /** Integers. **/
+  private static final int ONE_FIFTY = 150;
+  /** Integers. **/
+  private static final int SIX_HUNDRED = 600;
 
-  /** Creates two drop down windows that let players choose their checkers' colors. **/
+  /**
+   *  Creates two drop down windows that let players choose 
+   *  their checkers' colors. 
+   **/
   public /*Color*/ ChooseColor() {
-    final String[] colors = {"Red","Orange","Yellow","Green","Blue","Purple","Pink","Black"};
+    final String[] colors = {"Red", "Orange", "Yellow", 
+        "Green", "Blue", "Purple", "Pink", "Black"};
 
     JFrame frame2 = new JFrame("Colors");
     frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame2.setSize(600, 150);
+    frame2.setSize(SIX_HUNDRED, ONE_FIFTY);
     frame2.setLayout(new FlowLayout());
     frame2.setVisible(true);
 
@@ -52,7 +84,7 @@ public class ChooseColor extends JPanel {
 
 
     button.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent pressOk) {
+      public void actionPerformed(final ActionEvent pressOk) {
         if (comboBox.getSelectedIndex() == 0) {
           color1 = Color.RED;
         }
@@ -62,19 +94,19 @@ public class ChooseColor extends JPanel {
         if (comboBox.getSelectedIndex() == 2) {
           color1 = Color.YELLOW;
         }
-        if (comboBox.getSelectedIndex() == 3) {
+        if (comboBox.getSelectedIndex() == THREE) {
           color1 = Color.GREEN;
         }
-        if (comboBox.getSelectedIndex() == 4) {
+        if (comboBox.getSelectedIndex() == FOUR) {
           color1 = Color.BLUE;
         }
-        if (comboBox.getSelectedIndex() == 5) {
+        if (comboBox.getSelectedIndex() == FIVE) {
           color1 = Color.MAGENTA;
         }
-        if (comboBox.getSelectedIndex() == 6) {
+        if (comboBox.getSelectedIndex() == SIX) {
           color1 = Color.PINK;
         }
-        if (comboBox.getSelectedIndex() == 7) {
+        if (comboBox.getSelectedIndex() == SEVEN) {
           color1 = Color.BLACK;
         }
 
@@ -87,24 +119,24 @@ public class ChooseColor extends JPanel {
         if (comboBox2.getSelectedIndex() == 2) {
           color2 = Color.YELLOW;
         }
-        if (comboBox2.getSelectedIndex() == 3) {
+        if (comboBox2.getSelectedIndex() == THREE) {
           color2 = Color.GREEN;
         }
-        if (comboBox2.getSelectedIndex() == 4) {
+        if (comboBox2.getSelectedIndex() == FOUR) {
           color2 = Color.BLUE;
         }
-        if (comboBox2.getSelectedIndex() == 5) {
+        if (comboBox2.getSelectedIndex() == FIVE) {
           color2 = Color.MAGENTA;
         }
-        if (comboBox2.getSelectedIndex() == 6) {
+        if (comboBox2.getSelectedIndex() == SIX) {
           color2 = Color.PINK;
         }
-        if (comboBox.getSelectedIndex() == 7) {
+        if (comboBox.getSelectedIndex() == SEVEN) {
           color1 = Color.BLACK;
         }
 
         //new GUI();
-        Gui.change(color1,color2);
+        Gui.change(color1, color2);
       }
     });
     //return color1;
