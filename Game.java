@@ -17,31 +17,47 @@ import javax.sound.sampled.DataLine;
  */
 public class Game {
 
-	static int[][] tiles = new int[8][8];
-	static int[] move = new int[4];
-	boolean firstClick = true;
-	static boolean turnEnd = false;
-	static boolean secondJump = false;
-	boolean won = false;
-	static int turn;
+	/** Tile that make up the game board.**/
+	private static int[][] tiles = new int[8][8];
+	/** Array that holds the player's clicks.**/
+	private static int[] move = new int[4];
+	/** boolean used to determine if user is on his first click.**/
+	private boolean firstClick = true;
+	/** boolean used to determine if user is done with their turn.**/
+	private static boolean turnEnd = false;
+	/** boolean used to determine if user is on their second jump.**/
+	private static boolean secondJump = false;
+	/** boolean used to determine if a player has won.**/
+	private boolean won = false;
+	/** Int to determine whose turn it is.**/
+	private static int turn;
 
-	final int jumpLeft = -2;
-	final int jumpRight = 2;
-	final int jumpUp = -2;
-	final int jumpDown = 2;
-	static final int downOne = 1;
-	static final int upOne = -1;
-	static final int rightOne = 1;
-	static final int leftOne = -1;
-	static final int black = 2;
-	static final int red = 3;
-	static final int blackKing = 4;
-	static final int redKing = 5;
-	static final int greySpace = 0;
-	static final int brownSpace = 1;
-	static final int boardDimension = 8;
 
+	private static final int downOne = 1;
+	/** Int to indicate where a checker is going to move.**/
+	private static final int upOne = -1;
+	/** Int to indicate where a checker is going to move.**/
+	private static final int rightOne = 1;
+	/** Int to indicate where a checker is going to move.**/
+	private static final int leftOne = -1;
+	/** Int to indicate where black checkers are on the board.**/
+	private static final int black = 2;
+	/** Int to indicate where red checkers are on the board.**/
+	private static final int red = 3;
+	/** Int to indicate where black kings are on the board.**/
+	private static final int blackKing = 4;
+	/** Int to indicate where red kings are on the board.**/
+	private static final int redKing = 5;
+	/** Int to indicate where grey spaces are on the board.**/
+	private static final int greySpace = 0;
+	/** Int to indicate where brown spaces are on the board.**/
+	private static final int brownSpace = 1;
+	/** Dimension of the board.**/
+	private static final int boardDimension = 8;
+
+	/** String for holding the sound file for jumping.**/
 	private String jumpSoundFile = "./src/checkers/sounds/jump.wav";
+	/** String for holding the sound file for getting kinged.**/
 	private static String kingSoundFile = "./src/checkers/sounds/king.wav";
 
 	 /** 
@@ -100,7 +116,7 @@ public class Game {
 	   *  @param ytile  y-coordinate of the move
 	   **/
 	public final void setMove(final int xtile, final int ytile) {
-		if (turnEnd) {
+		if (!turnEnd) {
 			if (firstClick) {
 				// Restarts player's turn if they clicked an empty tile on first
 				// click.
@@ -129,11 +145,11 @@ public class Game {
 				move[3] = ytile;
 				firstClick = true;
 				// Goes through to determine what the player did that move
-				if (secondJump == false) {
+				if (!secondJump) {
 					isMoveValid();
 				}
 				isJumpValid();
-				if (secondJump == false) {
+				if (!secondJump) {
 					kingMove();
 				}
 			}
@@ -144,7 +160,7 @@ public class Game {
  	 *   Checks the board for kings, looking for checkers of opposite colors
  	 *    on the top or bottom of the board.
 	 **/
-	public static void checkForKing() {
+	public final void checkForKing() {
 		if (turn == black) {
 			for (int scanTopRow = 0; scanTopRow 
 					< boardDimension; scanTopRow++) {
@@ -200,7 +216,7 @@ public class Game {
 	   * @return  true or false for if it is a valid move.
 	   * @see boolean
 	   **/
-	public static boolean isMoveValid() {
+	public final boolean isMoveValid() {
 		// Checks to see if BLACK player clicks a BLACK checker
 		if (turn == black && tiles[move[0]][move[1]] == black) {
 			// Checks if BLACK player's second click 1 row above
@@ -477,7 +493,7 @@ public class Game {
 	   * Method for switching turns. Every time this is called,
 	   * it switches turns. 
 	   **/
-	public static void turn() {
+	public final void turn() {
 		if (turn == black) {
 			turnEnd = false;
 			secondJump = false;
@@ -497,7 +513,7 @@ public class Game {
 	   *  @param secondX  The x value for the ending location
 	   *  @param secondY  The y value for the 
 	   **/
-	public static void swapTiles(final int firstX,
+	public final void swapTiles(final int firstX,
 			final int firstY, final int secondX,
 			final int secondY) {
 		int tempTileValue = tiles[firstX][firstY];
@@ -524,7 +540,7 @@ public class Game {
 	   *  @return true or false depending on if a player has won
 	   *  @see boolean
 	   **/
-	public static boolean playerWon(final int[][] ptiles) {
+	public final boolean playerWon(final int[][] ptiles) {
 		// int noWinner = 0;
 		int blackCheckers = 0;
 		int redCheckers = 0;
@@ -555,7 +571,7 @@ public class Game {
 	   * 
 	   * @param fileName  The name of the WAV file you want to open
 	   **/
-	public static void playSound(final String fileName) {
+	public final void playSound(final String fileName) {
 		try {
 			File soundFile = new File(fileName);
 			AudioInputStream audioStream = 
