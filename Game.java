@@ -32,9 +32,9 @@ public class Game {
   private static final int EIGHT = 8;
 
   /** Tile that make up the game board.**/
-  static int[][] tiles = new int[EIGHT][EIGHT];
+  private static int[][] tiles = new int[EIGHT][EIGHT];
   /** Array that holds the player's clicks.**/
-  static int[] move = new int[FOUR];
+  private static int[] move = new int[FOUR];
   /** boolean used to determine if user is on his first click.**/
   private boolean firstClick = true;
   /** boolean used to determine if user is done with their turn.**/
@@ -42,6 +42,7 @@ public class Game {
   /** boolean used to determine if user is on their second jump.**/
   private static boolean secondJump = false;
   /** boolean used to determine if a player has won.**/
+  @SuppressWarnings("unused")
   private boolean won = false;
   /** Int to determine whose turn it is.**/
 
@@ -73,7 +74,9 @@ public class Game {
   private static String kingSoundFile = "./src/checkers/sounds/king.wav";
   
   /** Player turn starts at 1 or 2. **/
+  // CHECKSTYLE:OFF
   static int turn = new Random().nextInt(TWO) + TWO;
+  //CHECKSTYLE:ON
 
   /** 
   * Sets up the game board. 
@@ -84,14 +87,14 @@ public class Game {
       for (int ytile = 0; ytile < BOARD_DIMENSION; ytile++) {
         if ((xtile + ytile) % TWO == 0) {
           if (xtile < THREE) {
-            tiles[xtile][ytile] = RED;
+            getTiles()[xtile][ytile] = RED;
           } else if (xtile > FOUR) {
-            tiles[xtile][ytile] = BLACK;
+            getTiles()[xtile][ytile] = BLACK;
           } else {
-            tiles[xtile][ytile] = BROWN_SPACE;
+            getTiles()[xtile][ytile] = BROWN_SPACE;
           }
         } else {
-          tiles[xtile][ytile] = GREY_SPACE;
+          getTiles()[xtile][ytile] = GREY_SPACE;
         }
       }
     }
@@ -104,7 +107,7 @@ public class Game {
   * @see int[][]
   **/
   public static int[][] getArray() {
-    return Arrays.copyOf(tiles, tiles.length);
+    return Arrays.copyOf(getTiles(), getTiles().length);
   }
 
   /** 
@@ -134,8 +137,8 @@ public class Game {
       if (firstClick) {
         // Restarts player's turn if they clicked an empty tile on first
         // click.
-        if (tiles[xtile][ytile] == GREY_SPACE 
-            || tiles[xtile][ytile] == BROWN_SPACE) {
+        if (getTiles()[xtile][ytile] == GREY_SPACE 
+            || getTiles()[xtile][ytile] == BROWN_SPACE) {
           return;
         }
         // If correct, store the first click values
@@ -146,7 +149,8 @@ public class Game {
         // If player doesn't click a blank space to move to, it scraps
         // the
         // move and player gets to restart turn.
-        if (tiles[xtile][ytile] == RED || tiles[xtile][ytile] == BLACK) {
+        if (getTiles()[xtile][ytile] == RED || getTiles()[xtile][ytile] 
+            == BLACK) {
           move[0] = 0;
           move[1] = 0;
           firstClick = true;
@@ -178,16 +182,16 @@ public class Game {
     if (turn == BLACK) {
       for (int scanTopRow = 0; scanTopRow 
           < BOARD_DIMENSION; scanTopRow++) {
-        if (tiles[0][scanTopRow] == BLACK) {
-          tiles[0][scanTopRow] = BLACK_KING;
+        if (getTiles()[0][scanTopRow] == BLACK) {
+          getTiles()[0][scanTopRow] = BLACK_KING;
           playSound(kingSoundFile);
         }
       }
     } else if (turn == RED) {
       for (int scanBottomRow = 0; scanBottomRow 
           < BOARD_DIMENSION; scanBottomRow++) {
-        if (tiles[SEVEN][scanBottomRow] == RED) {
-          tiles[SEVEN][scanBottomRow] = RED_KING;
+        if (getTiles()[SEVEN][scanBottomRow] == RED) {
+          getTiles()[SEVEN][scanBottomRow] = RED_KING;
           playSound(kingSoundFile);
         }
       }
@@ -199,24 +203,26 @@ public class Game {
   * in any direction. Tiles are swapped when a move is made. 
   **/
   public final void kingMove() {
-    if (turn == BLACK && tiles[move[0]][move[1]] == BLACK_KING) {
-      if (move[0] == (move[TWO] + DOWN_ONE) 
-          || move[0] == (move[TWO] + UP_ONE)) {
-        if ((move[1] == (move[THREE] + LEFT_ONE)) 
-            || (move[1] == (move[THREE] + RIGHT_ONE))) {
+    if (turn == BLACK && getTiles()[getMove()[0]][getMove()[1]] == BLACK_KING) {
+      if (getMove()[0] == (getMove()[TWO] + DOWN_ONE) 
+          || getMove()[0] == (getMove()[TWO] + UP_ONE)) {
+        if ((getMove()[1] == (getMove()[THREE] + LEFT_ONE)) 
+            || (getMove()[1] == (getMove()[THREE] + RIGHT_ONE))) {
           turnEnd = true;
-          swapTiles(move[0], move[1], move[TWO], move[THREE]);
+          swapTiles(getMove()[0], getMove()[1], getMove()[TWO], 
+              getMove()[THREE]);
           turn();
         }
       }
     }
-    if (turn == RED && tiles[move[0]][move[1]] == RED_KING) {
-      if (move[0] == (move[TWO] + DOWN_ONE) 
-          || move[0] == (move[TWO] + UP_ONE)) {
-        if ((move[1] == (move[THREE] + LEFT_ONE)) 
-            || (move[1] == (move[THREE] + RIGHT_ONE))) {
+    if (turn == RED && getTiles()[getMove()[0]][getMove()[1]] == RED_KING) {
+      if (getMove()[0] == (getMove()[TWO] + DOWN_ONE) 
+          || getMove()[0] == (getMove()[TWO] + UP_ONE)) {
+        if ((getMove()[1] == (getMove()[THREE] + LEFT_ONE)) 
+            || (getMove()[1] == (getMove()[THREE] + RIGHT_ONE))) {
           turnEnd = true;
-          swapTiles(move[0], move[1], move[TWO], move[THREE]);
+          swapTiles(getMove()[0], getMove()[1], getMove()[TWO], 
+              getMove()[THREE]);
           turn();
         }
       }
@@ -232,15 +238,16 @@ public class Game {
   **/
   public static boolean isMoveValid() {
     // Checks to see if BLACK player clicks a BLACK checker
-    if (turn == BLACK && tiles[move[0]][move[1]] == BLACK) {
+    if (turn == BLACK && getTiles()[getMove()[0]][getMove()[1]] == BLACK) {
       // Checks if BLACK player's second click 1 row above
-      if (move[0] == (move[TWO] + DOWN_ONE)) {
+      if (getMove()[0] == (getMove()[TWO] + DOWN_ONE)) {
         // Checks to see if the BLACK player's second click is diagonal
         // of the first click
-        if ((move[1] == (move[THREE] + LEFT_ONE)) 
-            || (move[1] == (move[THREE] + RIGHT_ONE))) {
+        if ((getMove()[1] == (getMove()[THREE] + LEFT_ONE)) 
+            || (getMove()[1] == (getMove()[THREE] + RIGHT_ONE))) {
           turnEnd = true;
-          swapTiles(move[0], move[1], move[TWO], move[THREE]);
+          swapTiles(getMove()[0], getMove()[1], getMove()[TWO],
+              getMove()[THREE]);
           checkForKing();
           turn();
           return true;
@@ -249,15 +256,16 @@ public class Game {
 
     }
     // Checks to see if RED player clicks a RED checker
-    if (turn == RED && tiles[move[0]][move[1]] == RED) {
+    if (turn == RED && getTiles()[getMove()[0]][getMove()[1]] == RED) {
       // Checks if RED player's second click 1 row down
-      if (move[0] == (move[TWO] + UP_ONE)) {
+      if (getMove()[0] == (getMove()[TWO] + UP_ONE)) {
         // Checks to see if the RED player's second click is diagonal of
         // the first click
-        if ((move[1] == (move[THREE] + LEFT_ONE)) 
-            || (move[1] == (move[THREE] + RIGHT_ONE))) {
+        if ((getMove()[1] == (getMove()[THREE] + LEFT_ONE)) 
+            || (getMove()[1] == (getMove()[THREE] + RIGHT_ONE))) {
           turnEnd = true;
-          swapTiles(move[0], move[1], move[TWO], move[THREE]);
+          swapTiles(getMove()[0], getMove()[1], getMove()[TWO], 
+              getMove()[THREE]);
           checkForKing();
           turn();
           return true;
@@ -280,33 +288,36 @@ public class Game {
   public final boolean isJumpValid() {
     if (turn == BLACK) {
       // up right
-      if (move[0] > move[TWO] && move[1] < move[THREE]) {
-        if (tiles[move[0] - 1][move[1] + 1] == RED 
-            || tiles[move[0] - 1][move[1] + 1] == RED_KING) {
-          if (move[0] == move[TWO] + TWO && move[1] == move[THREE] - TWO 
-              && tiles[move[TWO]][move[THREE]] == BROWN_SPACE) {
+      if (getMove()[0] > getMove()[TWO] && getMove()[1] < getMove()[THREE]) {
+        if (getTiles()[getMove()[0] - 1][getMove()[1] + 1] == RED 
+            || getTiles()[getMove()[0] - 1][getMove()[1] + 1] == RED_KING) {
+          if (getMove()[0] == getMove()[TWO] + TWO && getMove()[1]
+              == getMove()[THREE] - TWO 
+              && getTiles()[getMove()[TWO]][getMove()[THREE]] == BROWN_SPACE) {
             jump(RIGHT_ONE, UP_ONE);
             return true;
           }
         }
       }
       // up left
-      if (move[0] > move[TWO] && move[1] > move[THREE]) {
-        if (tiles[move[0] - 1][move[1] - 1] == RED 
-            || tiles[move[0] - 1][move[1] - 1] == RED_KING) {
-          if (move[0] == move[TWO] + TWO && move[1] == move[THREE] + TWO 
-              && tiles[move[TWO]][move[THREE]] == BROWN_SPACE) {
+      if (getMove()[0] > getMove()[TWO] && getMove()[1] > getMove()[THREE]) {
+        if (getTiles()[getMove()[0] - 1][getMove()[1] - 1] == RED 
+            || getTiles()[getMove()[0] - 1][getMove()[1] - 1] == RED_KING) {
+          if (getMove()[0] == getMove()[TWO] + TWO && getMove()[1]
+              == getMove()[THREE] + TWO 
+              && getTiles()[getMove()[TWO]][getMove()[THREE]] == BROWN_SPACE) {
             jump(LEFT_ONE, UP_ONE);
             return true;
           }
         }
       }
       // down right
-      if (tiles[move[0]][move[1]] == BLACK_KING) {
-        if (move[0] < move[TWO] && move[1] < move[THREE]) {
-          if (tiles[move[0] + 1][move[1] + 1] == RED 
-              || tiles[move[0] + 1][move[1] + 1] == RED_KING) {
-            if (move[0] + TWO == move[TWO] && move[1] + TWO == move[THREE]) {
+      if (getTiles()[getMove()[0]][getMove()[1]] == BLACK_KING) {
+        if (getMove()[0] < getMove()[TWO] && getMove()[1] < getMove()[THREE]) {
+          if (getTiles()[getMove()[0] + 1][getMove()[1] + 1] == RED 
+              || getTiles()[getMove()[0] + 1][getMove()[1] + 1] == RED_KING) {
+            if (getMove()[0] + TWO == getMove()[TWO] && getMove()[1] + TWO
+                == getMove()[THREE]) {
               jump(RIGHT_ONE, DOWN_ONE);
               return true;
             }
@@ -314,12 +325,14 @@ public class Game {
         }
       }
       // down left
-      if (tiles[move[0]][move[1]] == BLACK_KING) {
-        if (move[0] < move[TWO] && move[1] > move[THREE]) {
-          if (tiles[move[0] + 1][move[1] - 1] == RED 
-              || tiles[move[0] + 1][move[1] - 1] == RED_KING) {
-            if (move[0] + TWO == move[TWO] && move[1] - TWO == move[THREE] 
-                && tiles[move[TWO]][move[THREE]] == BROWN_SPACE) {
+      if (getTiles()[getMove()[0]][getMove()[1]] == BLACK_KING) {
+        if (getMove()[0] < getMove()[TWO] && getMove()[1] > getMove()[THREE]) {
+          if (getTiles()[getMove()[0] + 1][getMove()[1] - 1] == RED 
+              || getTiles()[getMove()[0] + 1][getMove()[1] - 1] == RED_KING) {
+            if (getMove()[0] + TWO == getMove()[TWO] && getMove()[1] - TWO
+                == getMove()[THREE] 
+                && getTiles()[getMove()[TWO]][getMove()[THREE]] 
+                    == BROWN_SPACE) {
               jump(LEFT_ONE, DOWN_ONE);
               return true;
             }
@@ -330,12 +343,14 @@ public class Game {
 
     if (turn == RED) {
       // up right
-      if (tiles[move[0]][move[1]] == RED_KING) {
-        if (move[0] > move[TWO] && move[1] < move[THREE]) {
-          if (tiles[move[0] - 1][move[1] + 1] == BLACK 
-              || tiles[move[0] - 1][move[1] + 1] == BLACK_KING) {
-            if (move[0] - TWO == move[TWO] && move[1] + TWO == move[THREE] 
-                && tiles[move[TWO]][move[THREE]] == BROWN_SPACE) {
+      if (getTiles()[getMove()[0]][getMove()[1]] == RED_KING) {
+        if (getMove()[0] > getMove()[TWO] && getMove()[1] < getMove()[THREE]) {
+          if (getTiles()[getMove()[0] - 1][getMove()[1] + 1] == BLACK 
+              || getTiles()[getMove()[0] - 1][getMove()[1] + 1] == BLACK_KING) {
+            if (getMove()[0] - TWO == getMove()[TWO] && getMove()[1] + TWO
+                == getMove()[THREE] 
+                && getTiles()[getMove()[TWO]][getMove()[THREE]]
+                    == BROWN_SPACE) {
               jump(RIGHT_ONE, UP_ONE);
               return true;
             }
@@ -343,12 +358,14 @@ public class Game {
         }
       }
       // up left
-      if (tiles[move[0]][move[1]] == RED_KING) {
-        if (move[0] > move[TWO] && move[1] > move[THREE]) {
-          if (tiles[move[0] - 1][move[1] - 1] == BLACK 
-              || tiles[move[0] - 1][move[1] - 1] == BLACK_KING) {
-            if (move[0] - TWO == move[TWO] && move[1] - TWO == move[THREE] 
-                && tiles[move[TWO]][move[THREE]] == BROWN_SPACE) {
+      if (getTiles()[getMove()[0]][getMove()[1]] == RED_KING) {
+        if (getMove()[0] > getMove()[TWO] && getMove()[1] > getMove()[THREE]) {
+          if (getTiles()[getMove()[0] - 1][getMove()[1] - 1] == BLACK 
+              || getTiles()[getMove()[0] - 1][getMove()[1] - 1] == BLACK_KING) {
+            if (getMove()[0] - TWO == getMove()[TWO] && getMove()[1] - TWO
+                == getMove()[THREE] 
+                && getTiles()[getMove()[TWO]][getMove()[THREE]]
+                    == BROWN_SPACE) {
               jump(LEFT_ONE, UP_ONE);
               return true;
             }
@@ -356,22 +373,24 @@ public class Game {
         }
       }
       // down right
-      if (move[0] < move[TWO] && move[1] < move[THREE]) {
-        if (tiles[move[0] + 1][move[1] + 1] == BLACK 
-            || tiles[move[0] + 1][move[1] + 1] == BLACK_KING) {
-          if (move[0] + TWO == move[TWO] && move[1] + TWO == move[THREE] 
-              && tiles[move[TWO]][move[THREE]] == BROWN_SPACE) {
+      if (getMove()[0] < getMove()[TWO] && getMove()[1] < getMove()[THREE]) {
+        if (getTiles()[getMove()[0] + 1][getMove()[1] + 1] == BLACK 
+            || getTiles()[getMove()[0] + 1][getMove()[1] + 1] == BLACK_KING) {
+          if (getMove()[0] + TWO == getMove()[TWO] && getMove()[1] + TWO
+              == getMove()[THREE] 
+              && getTiles()[getMove()[TWO]][getMove()[THREE]] == BROWN_SPACE) {
             jump(RIGHT_ONE, DOWN_ONE);
             return true;
           }
         }
       }
       // down left
-      if (move[0] < move[TWO] && move[1] > move[THREE]) {
-        if (tiles[move[0] + 1][move[1] - 1] == BLACK 
-            || tiles[move[0] + 1][move[1] - 1] == BLACK_KING) {
-          if (move[0] + TWO == move[TWO] && move[1] - TWO == move[THREE] 
-              && tiles[move[TWO]][move[THREE]] == BROWN_SPACE) {
+      if (getMove()[0] < getMove()[TWO] && getMove()[1] > getMove()[THREE]) {
+        if (getTiles()[getMove()[0] + 1][getMove()[1] - 1] == BLACK 
+            || getTiles()[getMove()[0] + 1][getMove()[1] - 1] == BLACK_KING) {
+          if (getMove()[0] + TWO == getMove()[TWO] && getMove()[1] - TWO
+              == getMove()[THREE] 
+              && getTiles()[getMove()[TWO]][getMove()[THREE]] == BROWN_SPACE) {
             jump(LEFT_ONE, DOWN_ONE);
             return true;
           }
@@ -392,12 +411,13 @@ public class Game {
   *          to jump, positive of negative
   **/
   public final void jump(final int horizontal, final int vertical) {
-    tiles[(move[0] + move[TWO]) / TWO][(move[1] + move[THREE]) / TWO] 
+    getTiles()[(getMove()[0] + getMove()[TWO]) / TWO][(getMove()[1]
+        + getMove()[THREE]) / TWO] 
         = BROWN_SPACE;
-    swapTiles(move[0], move[1], move[TWO], move[THREE]);
+    swapTiles(getMove()[0], getMove()[1], getMove()[TWO], getMove()[THREE]);
     checkForKing();
-    won = playerWon(tiles);
-    isjumpavailable(tiles[move[TWO]][move[THREE]]);
+    won = playerWon(getTiles());
+    isjumpavailable(getTiles()[getMove()[TWO]][getMove()[THREE]]);
     playSound(jumpSoundFile);
   }
 
@@ -412,9 +432,11 @@ public class Game {
   public final boolean isjumpavailable(final int color) {
     if (color == BLACK || color == BLACK_KING) {
       try {
-        if (tiles[move[TWO] - 1][move[THREE] + 1] == RED 
-            || tiles[move[TWO] - 1][move[THREE] + 1] == RED_KING) {
-          if (tiles[move[TWO] - TWO][move[THREE] + TWO] == BROWN_SPACE) {
+        if (getTiles()[getMove()[TWO] - 1][getMove()[THREE] + 1] == RED 
+            || getTiles()[getMove()[TWO] - 1][getMove()[THREE] + 1]
+                == RED_KING) {
+          if (getTiles()[getMove()[TWO] - TWO][getMove()[THREE] + TWO]
+              == BROWN_SPACE) {
             secondJump = true;
             return true;
           }
@@ -423,9 +445,11 @@ public class Game {
         // do nothing
       }
       try {
-        if (tiles[move[TWO] - 1][move[THREE] - 1] == RED 
-            || tiles[move[TWO] - 1][move[THREE] - 1] == RED_KING) {
-          if (tiles[move[TWO] - TWO][move[THREE] - TWO] == BROWN_SPACE) {
+        if (getTiles()[getMove()[TWO] - 1][getMove()[THREE] - 1] == RED 
+            || getTiles()[getMove()[TWO] - 1][getMove()[THREE] - 1]
+                == RED_KING) {
+          if (getTiles()[getMove()[TWO] - TWO][getMove()[THREE] - TWO]
+              == BROWN_SPACE) {
             secondJump = true;
             return true;
           }
@@ -436,9 +460,11 @@ public class Game {
     }
     if (color == BLACK_KING) {
       try {
-        if (tiles[move[TWO] + 1][move[THREE] + 1] == RED 
-            || tiles[move[TWO] + 1][move[THREE] + 1] == RED_KING) {
-          if (tiles[move[TWO] + TWO][move[THREE] + TWO] == BROWN_SPACE) {
+        if (getTiles()[getMove()[TWO] + 1][getMove()[THREE] + 1] == RED 
+            || getTiles()[getMove()[TWO] + 1][getMove()[THREE] + 1]
+                == RED_KING) {
+          if (getTiles()[getMove()[TWO] + TWO][getMove()[THREE] + TWO]
+              == BROWN_SPACE) {
             secondJump = true;
             return true;
           }
@@ -447,9 +473,11 @@ public class Game {
         // do nothing
       }
       try {
-        if (tiles[move[TWO] + 1][move[THREE] - 1] == RED 
-            || tiles[move[TWO] + 1][move[THREE] - 1] == RED_KING) {
-          if (tiles[move[TWO] + TWO][move[THREE] - TWO] == BROWN_SPACE) {
+        if (getTiles()[getMove()[TWO] + 1][getMove()[THREE] - 1] == RED 
+            || getTiles()[getMove()[TWO] + 1][getMove()[THREE] - 1]
+                == RED_KING) {
+          if (getTiles()[getMove()[TWO] + TWO][getMove()[THREE] - TWO]
+              == BROWN_SPACE) {
             secondJump = true;
             return true;
           }
@@ -461,9 +489,11 @@ public class Game {
 
     if (color == RED || color == RED_KING) {
       try {
-        if (tiles[move[TWO] + 1][move[THREE] + 1] == BLACK 
-            || tiles[move[TWO] + 1][move[THREE] + 1] == BLACK_KING) {
-          if (tiles[move[TWO] + TWO][move[THREE] + TWO] == BROWN_SPACE) {
+        if (getTiles()[getMove()[TWO] + 1][getMove()[THREE] + 1] == BLACK 
+            || getTiles()[getMove()[TWO] + 1][getMove()[THREE] + 1]
+                == BLACK_KING) {
+          if (getTiles()[getMove()[TWO] + TWO][getMove()[THREE] + TWO]
+              == BROWN_SPACE) {
             secondJump = true;
             return true;
           }
@@ -472,9 +502,11 @@ public class Game {
         // do nothing
       }
       try {
-        if (tiles[move[TWO] + 1][move[THREE] - 1] == BLACK 
-            || tiles[move[TWO] + 1][move[THREE] - 1] == BLACK_KING) {
-          if (tiles[move[TWO] + TWO][move[THREE] - TWO] == BROWN_SPACE) {
+        if (getTiles()[getMove()[TWO] + 1][getMove()[THREE] - 1] == BLACK 
+            || getTiles()[getMove()[TWO] + 1][getMove()[THREE] - 1]
+                == BLACK_KING) {
+          if (getTiles()[getMove()[TWO] + TWO][getMove()[THREE] - TWO]
+              == BROWN_SPACE) {
             secondJump = true;
             return true;
           }
@@ -485,9 +517,11 @@ public class Game {
     }
     if (color == RED_KING) {
       try {
-        if (tiles[move[TWO] - 1][move[THREE] + 1] == BLACK 
-            || tiles[move[TWO] - 1][move[THREE] + 1] == BLACK_KING) {
-          if (tiles[move[TWO] - TWO][move[THREE] + TWO] == BROWN_SPACE) {
+        if (getTiles()[getMove()[TWO] - 1][getMove()[THREE] + 1] == BLACK 
+            || getTiles()[getMove()[TWO] - 1][getMove()[THREE] + 1]
+                == BLACK_KING) {
+          if (getTiles()[getMove()[TWO] - TWO][getMove()[THREE] + TWO]
+              == BROWN_SPACE) {
             secondJump = true;
             return true;
           }
@@ -497,9 +531,11 @@ public class Game {
       }
 
       try {
-        if (tiles[move[TWO] - ONE][move[THREE] - ONE] == BLACK 
-            || tiles[move[TWO] - 1][move[THREE] - 1] == BLACK_KING) {
-          if (tiles[move[TWO] - TWO][move[THREE] - TWO] == BROWN_SPACE) {
+        if (getTiles()[getMove()[TWO] - ONE][getMove()[THREE] - ONE] == BLACK 
+            || getTiles()[getMove()[TWO] - 1][getMove()[THREE] - 1] 
+                == BLACK_KING) {
+          if (getTiles()[getMove()[TWO] - TWO][getMove()[THREE] - TWO] 
+              == BROWN_SPACE) {
             secondJump = true;
             return true;
           }
@@ -539,10 +575,10 @@ public class Game {
   public static void swapTiles(final int firstX,
       final int firstY, final int secondX,
       final int secondY) {
-    int tempTileValue = tiles[firstX][firstY];
+    int tempTileValue = getTiles()[firstX][firstY];
 
-    tiles[firstX][firstY] = tiles[secondX][secondY];
-    tiles[secondX][secondY] = tempTileValue;
+    getTiles()[firstX][firstY] = getTiles()[secondX][secondY];
+    getTiles()[secondX][secondY] = tempTileValue;
   }
 
   /** Use for debugging purposes only. **/
@@ -550,7 +586,7 @@ public class Game {
     for (int xtile = 0; xtile < EIGHT; xtile++) {
       System.out.println();
       for (int ytile = 0; ytile < EIGHT; ytile++) {
-        System.out.print(tiles[xtile][ytile]);
+        System.out.print(getTiles()[xtile][ytile]);
       }
     }
   }
@@ -620,7 +656,7 @@ public class Game {
    */
   public static void setTile(final int xtile,
       final int ytile, final int value) {
-    tiles[xtile][ytile] = value;
+    getTiles()[xtile][ytile] = value;
   }
   
 
@@ -633,8 +669,44 @@ public class Game {
   * @see int
   **/
   public static int getTile(final int xtile, final int ytile) {
-    return tiles[xtile][ytile];
+    return getTiles()[xtile][ytile];
   }
+
+  /** 
+   * Getter for move array.
+   * 
+   * @return move array. **/
+  public static int[] getMove() {
+    return move;
+  }
+
+  //CHECKSTYLE:OFF
+  /** 
+   * Setter for move array.
+   * 
+   * @param move array. **/
+  public static void setMove(final int[] move) {
+    Game.move = move;
+  }
+  //CHECKSTYLE:ON
+
+  /** 
+   * Setter for tiles array.
+   * 
+   * @return tiles array. **/
+  public static int[][] getTiles() {
+    return tiles;
+  }
+
+  //CHECKSTYLE:OFF
+  /** 
+   * Setter foe tiles array.
+   * 
+   * @param tiles array. **/
+  public static void setTiles(final int[][] tiles) {
+    Game.tiles = tiles;
+  }
+  //CHECKSTYLE:ON
   
   
 }

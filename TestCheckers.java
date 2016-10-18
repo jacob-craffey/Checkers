@@ -1,6 +1,6 @@
 package checkers;
 
-
+//CHECKSTYLE:OFF
 import java.awt.Color;
 
 import org.junit.Test;
@@ -11,7 +11,7 @@ public class TestCheckers {
 
 	Game game1 = new Game();
 	StartGame start = new StartGame();
-	int[][] grid = Game.tiles;
+	int[][] grid = Game.getTiles();
 	int[][] grid1 = new int[8][8];
 	int[][] grid2 = new int[8][8];
 	int[][] grid3 = new int[8][8];
@@ -108,10 +108,10 @@ public class TestCheckers {
 	public void testIsMoveValid3() {
 		Game.turn = Game.BLACK;
 		grid2[5][5] = Game.BLACK;
-		Game.move[0] = 2;
-		Game.move[1] = 2;
-		Game.move[2] = 4;
-		Game.move[3] = 4;
+		Game.getMove()[0] = 2;
+		Game.getMove()[1] = 2;
+		Game.getMove()[2] = 4;
+		Game.getMove()[3] = 4;
 		assertEquals(game1.isMoveValid(), false);
 	}
 
@@ -119,8 +119,8 @@ public class TestCheckers {
 	public void testIsMoveValid4() {
 		Game.turn = Game.RED;
 		grid2[2][2] = Game.RED;
-		Game.move[2] = 3;
-		Game.move[3] = 3;
+		Game.getMove()[2] = 3;
+		Game.getMove()[3] = 3;
 		assertEquals(game1.isMoveValid(), true);
 	}
 
@@ -132,10 +132,10 @@ public class TestCheckers {
 		grid[4][2] = Game.BLACK;
 		grid[3][3] = Game.RED;
 		grid[2][4] = Game.BROWN_SPACE;
-		Game.move[0] = 4;
-		Game.move[1] = 2;
-		Game.move[2] = 2;
-		Game.move[3] = 4;
+		Game.getMove()[0] = 4;
+		Game.getMove()[1] = 2;
+		Game.getMove()[2] = 2;
+		Game.getMove()[3] = 4;
 		assertEquals(game1.isJumpValid(), true);
 	}
 
@@ -147,10 +147,10 @@ public class TestCheckers {
 		grid[4][2] = Game.BLACK;
 		grid[3][1] = Game.RED;
 		grid[2][0] = Game.BROWN_SPACE;
-		Game.move[0] = 4;
-		Game.move[1] = 2;
-		Game.move[2] = 2;
-		Game.move[3] = 0;
+		Game.getMove()[0] = 4;
+		Game.getMove()[1] = 2;
+		Game.getMove()[2] = 2;
+		Game.getMove()[3] = 0;
 		assertEquals(game1.isJumpValid(), true);
 	}
 
@@ -162,10 +162,10 @@ public class TestCheckers {
 		grid[2][4] = Game.BROWN_SPACE;
 		grid[1][5] = Game.RED_KING;
 		grid[0][6] = Game.BROWN_SPACE;
-		Game.move[0] = 4;
-		Game.move[1] = 2;
-		Game.move[2] = 2;
-		Game.move[3] = 4;
+		Game.getMove()[0] = 4;
+		Game.getMove()[1] = 2;
+		Game.getMove()[2] = 2;
+		Game.getMove()[3] = 4;
 		assertEquals(game1.isjumpavailable(Game.BLACK), true);
 	}
 
@@ -177,10 +177,10 @@ public class TestCheckers {
 		grid[2][4] = Game.BROWN_SPACE;
 		grid[1][5] = 0;
 		grid[0][6] = Game.BROWN_SPACE;
-		Game.move[0] = 4;
-		Game.move[1] = 2;
-		Game.move[2] = 2;
-		Game.move[3] = 4;
+		Game.getMove()[0] = 4;
+		Game.getMove()[1] = 2;
+		Game.getMove()[2] = 2;
+		Game.getMove()[3] = 4;
 		assertEquals(game1.isjumpavailable(Game.BLACK), false);
 	}
 
@@ -192,10 +192,10 @@ public class TestCheckers {
 		grid[2][4] = Game.BROWN_SPACE;
 		grid[1][5] = Game.RED;
 		grid[0][6] = Game.BROWN_SPACE;
-		Game.move[0] = 4;
-		Game.move[1] = 2;
-		Game.move[2] = 2;
-		Game.move[3] = 15;
+		Game.getMove()[0] = 4;
+		Game.getMove()[1] = 2;
+		Game.getMove()[2] = 2;
+		Game.getMove()[3] = 15;
 		assertEquals(game1.isjumpavailable(Game.BLACK), false);
 	}
 
@@ -210,10 +210,10 @@ public class TestCheckers {
 		grid[2][2] = Game.BROWN_SPACE;
 		grid[1][1] = Game.RED;
 		grid[0][0] = Game.BROWN_SPACE;
-		Game.move[0] = 4;
-		Game.move[1] = 4;
-		Game.move[2] = 2;
-		Game.move[3] = 2;
+		Game.getMove()[0] = 4;
+		Game.getMove()[1] = 4;
+		Game.getMove()[2] = 2;
+		Game.getMove()[3] = 2;
 		assertEquals(game1.isjumpavailable(Game.BLACK), true);
 	}
 
@@ -225,10 +225,10 @@ public class TestCheckers {
 		grid[2][2] = Game.BROWN_SPACE;
 		grid[3][3] = Game.RED;
 		grid[4][4] = Game.BROWN_SPACE;
-		Game.move[0] = 0;
-		Game.move[1] = 0;
-		Game.move[2] = 2;
-		Game.move[3] = 2;
+		Game.getMove()[0] = 0;
+		Game.getMove()[1] = 0;
+		Game.getMove()[2] = 2;
+		Game.getMove()[3] = 2;
 		assertEquals(game1.isjumpavailable(Game.BLACK_KING), true);
 	}
 
@@ -240,10 +240,10 @@ public class TestCheckers {
 		grid[2][2] = Game.BROWN_SPACE;
 		grid[3][1] = Game.RED;
 		grid[4][0] = Game.BROWN_SPACE;
-		Game.move[0] = 0;
-		Game.move[1] = 0;
-		Game.move[2] = 2;
-		Game.move[3] = 2;
+		Game.getMove()[0] = 0;
+		Game.getMove()[1] = 0;
+		Game.getMove()[2] = 2;
+		Game.getMove()[3] = 2;
 		assertEquals(game1.isjumpavailable(Game.BLACK_KING), true);
 	}
 
@@ -255,10 +255,10 @@ public class TestCheckers {
 		grid[2][4] = Game.BROWN_SPACE;
 		grid[1][5] = Game.RED_KING;
 		grid[0][6] = Game.BROWN_SPACE;
-		Game.move[0] = 4;
-		Game.move[1] = 2;
-		Game.move[2] = 2;
-		Game.move[3] = 4;
+		Game.getMove()[0] = 4;
+		Game.getMove()[1] = 2;
+		Game.getMove()[2] = 2;
+		Game.getMove()[3] = 4;
 		assertEquals(game1.isjumpavailable(8), false);
 	}
 
@@ -269,10 +269,10 @@ public class TestCheckers {
 		grid[2][4] = Game.BROWN_SPACE;
 		grid[1][5] = Game.RED_KING;
 		grid[0][6] = Game.BROWN_SPACE;
-		Game.move[0] = 4;
-		Game.move[1] = 2;
-		Game.move[2] = 2;
-		Game.move[3] = 4;
+		Game.getMove()[0] = 4;
+		Game.getMove()[1] = 2;
+		Game.getMove()[2] = 2;
+		Game.getMove()[3] = 4;
 		assertEquals(game1.isjumpavailable(8), false);
 	}
 
@@ -284,10 +284,10 @@ public class TestCheckers {
 		grid[2][2] = Game.BROWN_SPACE;
 		grid[1][1] = Game.RED_KING;
 		grid[0][0] = Game.BROWN_SPACE;
-		Game.move[0] = 4;
-		Game.move[1] = 4;
-		Game.move[2] = 2;
-		Game.move[3] = 2;
+		Game.getMove()[0] = 4;
+		Game.getMove()[1] = 4;
+		Game.getMove()[2] = 2;
+		Game.getMove()[3] = 2;
 		assertEquals(game1.isjumpavailable(Game.BLACK), true);
 	}
 
@@ -299,10 +299,10 @@ public class TestCheckers {
 		grid[2][2] = Game.BROWN_SPACE;
 		grid[1][1] = 0;
 		grid[0][0] = Game.BROWN_SPACE;
-		Game.move[0] = 4;
-		Game.move[1] = 4;
-		Game.move[2] = 2;
-		Game.move[3] = 2;
+		Game.getMove()[0] = 4;
+		Game.getMove()[1] = 4;
+		Game.getMove()[2] = 2;
+		Game.getMove()[3] = 2;
 		assertEquals(game1.isjumpavailable(Game.BLACK), false);
 	}
 
@@ -314,10 +314,10 @@ public class TestCheckers {
 		grid[2][2] = Game.BROWN_SPACE;
 		grid[3][3] = Game.RED_KING;
 		grid[4][4] = Game.BROWN_SPACE;
-		Game.move[0] = 0;
-		Game.move[1] = 0;
-		Game.move[2] = 2;
-		Game.move[3] = 2;
+		Game.getMove()[0] = 0;
+		Game.getMove()[1] = 0;
+		Game.getMove()[2] = 2;
+		Game.getMove()[3] = 2;
 		assertEquals(game1.isjumpavailable(Game.BLACK_KING), true);
 	}
 
@@ -329,10 +329,10 @@ public class TestCheckers {
 		grid[2][2] = Game.BROWN_SPACE;
 		grid[3][3] = Game.RED_KING;
 		grid[4][4] = 8;
-		Game.move[0] = 0;
-		Game.move[1] = 0;
-		Game.move[2] = 2;
-		Game.move[3] = 2;
+		Game.getMove()[0] = 0;
+		Game.getMove()[1] = 0;
+		Game.getMove()[2] = 2;
+		Game.getMove()[3] = 2;
 		assertEquals(game1.isjumpavailable(Game.BLACK_KING), false);
 	}
 
@@ -343,10 +343,10 @@ public class TestCheckers {
 		grid[2][2] = Game.BROWN_SPACE;
 		grid[3][3] = Game.RED_KING;
 		grid[4][4] = Game.BROWN_SPACE;
-		Game.move[0] = 0;
-		Game.move[1] = 0;
-		Game.move[2] = 2;
-		Game.move[3] = 23;
+		Game.getMove()[0] = 0;
+		Game.getMove()[1] = 0;
+		Game.getMove()[2] = 2;
+		Game.getMove()[3] = 23;
 		assertEquals(game1.isjumpavailable(Game.BLACK_KING), false);
 	}
 
@@ -357,10 +357,10 @@ public class TestCheckers {
 		grid[2][2] = Game.BROWN_SPACE;
 		grid[3][1] = Game.RED_KING;
 		grid[4][0] = Game.BROWN_SPACE;
-		Game.move[0] = 0;
-		Game.move[1] = 4;
-		Game.move[2] = 2;
-		Game.move[3] = 2;
+		Game.getMove()[0] = 0;
+		Game.getMove()[1] = 4;
+		Game.getMove()[2] = 2;
+		Game.getMove()[3] = 2;
 		assertEquals(game1.isjumpavailable(Game.BLACK_KING), true);
 	}
 
@@ -371,10 +371,10 @@ public class TestCheckers {
 		grid[2][2] = Game.BROWN_SPACE;
 		grid[3][1] = Game.RED_KING;
 		grid[4][0] = 6;
-		Game.move[0] = 0;
-		Game.move[1] = 4;
-		Game.move[2] = 2;
-		Game.move[3] = 2;
+		Game.getMove()[0] = 0;
+		Game.getMove()[1] = 4;
+		Game.getMove()[2] = 2;
+		Game.getMove()[3] = 2;
 		assertEquals(game1.isjumpavailable(Game.BLACK_KING), false);
 	}
 
@@ -385,10 +385,10 @@ public class TestCheckers {
 		grid[2][2] = Game.BROWN_SPACE;
 		grid[3][3] = Game.BLACK_KING;
 		grid[4][4] = Game.BROWN_SPACE;
-		Game.move[0] = 0;
-		Game.move[1] = 0;
-		Game.move[2] = 2;
-		Game.move[3] = 2;
+		Game.getMove()[0] = 0;
+		Game.getMove()[1] = 0;
+		Game.getMove()[2] = 2;
+		Game.getMove()[3] = 2;
 		assertEquals(game1.isjumpavailable(Game.RED), true);
 	}
 
@@ -399,10 +399,10 @@ public class TestCheckers {
 		grid[2][2] = Game.BROWN_SPACE;
 		grid[3][3] = Game.BLACK;
 		grid[4][4] = 9;
-		Game.move[0] = 0;
-		Game.move[1] = 0;
-		Game.move[2] = 2;
-		Game.move[3] = 2;
+		Game.getMove()[0] = 0;
+		Game.getMove()[1] = 0;
+		Game.getMove()[2] = 2;
+		Game.getMove()[3] = 2;
 		assertEquals(game1.isjumpavailable(Game.RED_KING), false);
 	}
 
@@ -413,10 +413,10 @@ public class TestCheckers {
 		grid[2][2] = Game.BROWN_SPACE;
 		grid[3][3] = Game.BLACK;
 		grid[4][4] = Game.BROWN_SPACE;
-		Game.move[0] = 0;
-		Game.move[1] = 0;
-		Game.move[2] = 10;
-		Game.move[3] = 2;
+		Game.getMove()[0] = 0;
+		Game.getMove()[1] = 0;
+		Game.getMove()[2] = 10;
+		Game.getMove()[3] = 2;
 		assertEquals(game1.isjumpavailable(Game.RED_KING), false);
 	}
 	
@@ -427,10 +427,10 @@ public class TestCheckers {
 		grid[2][2] = Game.BROWN_SPACE;
 		grid[3][3] = Game.BLACK_KING;
 		grid[4][4] = Game.BROWN_SPACE;
-		Game.move[0] = 0;
-		Game.move[1] = 0;
-		Game.move[2] = 2;
-		Game.move[3] = 2;
+		Game.getMove()[0] = 0;
+		Game.getMove()[1] = 0;
+		Game.getMove()[2] = 2;
+		Game.getMove()[3] = 2;
 		assertEquals(game1.isjumpavailable(Game.RED), true);
 	}
 
@@ -464,3 +464,4 @@ public class TestCheckers {
 	
 	}
 }
+//CHECKSTYLE:ON

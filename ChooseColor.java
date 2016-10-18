@@ -25,10 +25,6 @@ public class ChooseColor extends JPanel {
   private Color color2 = Color.BLUE;
   
   /** Integers. **/
-  private static final int ONE = 1;
-  /** Integers. **/
-  private static final int TWO = 2;
-  /** Integers. **/
   private static final int THREE = 3;
   /** Integers. **/
   private static final int FOUR = 4;

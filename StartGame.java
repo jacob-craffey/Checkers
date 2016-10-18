@@ -4,17 +4,14 @@ package checkers;
   * @author Brandon Griggs, Jacob Craffey, Nick Frein. 
   */
 
+//CHECKSTYLE:OFF
 /**
   * Class for getting the game rolling. Starts out by letting the
   * players select their color. The game progresses in other classes
   * through this root start.
   */
-final class StartGame {
-  
-  /** Constructor used to prevent check style error. **/
-  StartGame() {
-    // does nothing
-  }
+public class StartGame {
+  //CHECKSTYLE:ON
   
   /**
    * main function of the class. Carries out tasks as described in the
