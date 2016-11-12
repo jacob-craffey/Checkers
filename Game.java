@@ -84,7 +84,9 @@ public class Game {
   * Sets up the game board. 
   **/
   public Game() {
-
+    
+    
+    
     for (int ytile = 0; ytile < BOARD_DIMENSION; ytile++) {
       for (int xtile = 0; xtile < BOARD_DIMENSION; xtile++) {
         if ((ytile + xtile) % TWO == 0) {
@@ -180,23 +182,7 @@ public class Game {
    *    on the top or bottom of the board.
    **/
   public static void checkForKing() {
-    if (turn == BLACK) {
-      for (int scanTopRow = 0; scanTopRow 
-          < BOARD_DIMENSION; scanTopRow++) {
-        if (getTiles()[0][scanTopRow] == BLACK) {
-          getTiles()[0][scanTopRow] = BLACK_KING;
-          playSound(kingSoundFile);
-        }
-      }
-    } else if (turn == RED) {
-      for (int scanBottomRow = 0; scanBottomRow 
-          < BOARD_DIMENSION; scanBottomRow++) {
-        if (getTiles()[SEVEN][scanBottomRow] == RED) {
-          getTiles()[SEVEN][scanBottomRow] = RED_KING;
-          playSound(kingSoundFile);
-        }
-      }
-    }
+    tiles = AIChecker.checkForKing(tiles);
   }
 
   /** 
@@ -421,48 +407,6 @@ public class Game {
     isjumpavailable(getTiles()[getMove()[TWO]][getMove()[THREE]]);
     playSound(jumpSoundFile);
   }
-
-  public static boolean aijumpavailable(int y, int x) {
-    if( (y+2<8) && (x+2<8) ) {
-      if((tiles[y+1][x+1]==BLACK  || tiles[y+1][x+1]==BLACK_KING) && (tiles[y+2][x+2]==1) ) {
-        swapTiles(y,x,y+2,x+2);
-        tiles[y+1][x+1] = 1;
-        checkForKing();
-        aijumpavailable(y+2,x+2);
-        return true;
-      }
-    }
-    
-    if( (y+2<8) && (x-2>=0) ) {
-      if ( (tiles[y+1][x-1]==BLACK || tiles[y+1][x-1]==BLACK_KING) && (tiles[y+2][x-2]==1) ) {
-        swapTiles(y,x,y+2,x-2);
-        tiles[y+1][x-1] = 1;
-        checkForKing();
-        aijumpavailable(y+2,x-2);
-        return true;
-      }
-    }
-    
-    if( (y-2>=0) && (x+2<8) && (tiles[y][x]==RED_KING) ) {
-      if( (tiles[y-1][x+1]==BLACK || tiles[y-1][x+1]==BLACK_KING) && (tiles[y-2][x+2]==1) ) {
-        swapTiles(y,x,y-2,x+2);
-        tiles[y-1][x+1] = 1;
-        aijumpavailable(y-2,x+2);
-        return true;
-      }
-    }
-    
-    if( (y-2>=0) && (x-2>=0) && (tiles[y][x]==RED_KING) ) {
-      if ( (tiles[y-1][x-1]==BLACK || tiles[y-1][x-1]==BLACK_KING) && (tiles[y-2][x-2]==1) ) {
-        swapTiles(y,x,y-2,x-2);
-        tiles[y-1][x-1] = 1;
-        aijumpavailable(y-2,x-2);
-        return true;
-      }
-    }
-    
-    return false;
-  }
   
   /** 
   *  Checks if player's checker can jump over another enemy checker.
@@ -611,185 +555,7 @@ public class Game {
   }
   
   public static void ai() {
-    ArrayList aiPositions = new ArrayList();
-    boolean moveWasMade=false;
-    
-    for(int y=0; y<8; y++) {
-      for(int x=0; x<8; x++) {
-        if( (tiles[y][x] == RED) || (tiles[y][x] == RED_KING) ) {
-          System.out.println("RED x:" + x + " y: " + y +" has: " + tiles[y][x]);  
-          aiPositions.add(y);
-          aiPositions.add(x);
-          if(aijumpavailable(y,x))
-            return;
-        }
-      }
-    }
-    
-    while(!aiPositions.isEmpty() && !moveWasMade) {
-      int randomChecker = (int)(Math.random() * ((aiPositions.size()-1)));
-      if (randomChecker % 2 == 1) {
-        randomChecker--;
-      }
-      System.out.println("Random: " + randomChecker);
-      System.out.println("AI Positions: " + aiPositions.size());
-      System.out.println("random checker y: " + (int)aiPositions.get(randomChecker));
-
-      
-      int y1 = (int)aiPositions.get(randomChecker);
-      aiPositions.remove(randomChecker);
-      
-      System.out.println("random checker x: " + (int)aiPositions.get(randomChecker));
-      System.out.println("");
-      
-      int x1 = (int)aiPositions.get(randomChecker);
-      aiPositions.remove(randomChecker);
-      
-      Random directionX = new Random();
-      int randomDirectionX = directionX.nextInt((2-0)+1); // ((max - min) + 1)
-      randomDirectionX--;
-      if(randomDirectionX==0) {
-        randomDirectionX--;
-      }
-      
-      Random directionY = new Random();
-      int randomDirectionY = directionY.nextInt((2-0)+1); // ((max - min) + 1)
-      if(tiles[y1][x1]==RED_KING) {
-        randomDirectionY--;
-        if(randomDirectionY==0) {
-          randomDirectionY--;
-        }
-      } else {
-        randomDirectionY=1;
-      }
-  
-// Moving Down
-      if(randomDirectionY>0) {
-        if(randomDirectionX<=0) {
-          if((x1>0) && (y1<7)) {
-            //System.out.println("leftDown: " + tiles[y1+1][x1-1]);
-            if(tiles[y1+1][x1-1] == 1) {
-              swapTiles(y1,x1,y1+1,x1-1);
-              checkForKing();
-              moveWasMade=true;
-              return;
-            }
-          } else if((x1<7) && (y1<7)) {
-            if(tiles[y1+1][x1+1] == 1) {
-              swapTiles(y1,x1,y1+1,x1+1);
-              checkForKing();
-              moveWasMade=true;
-              return;
-            }
-          }
-  // Move to the right
-        } else {
-          if((x1<7) && (y1<7)) {
-            if(tiles[y1+1][x1+1] == 1) {
-              swapTiles(y1,x1,y1+1,x1+1);
-              checkForKing();
-              moveWasMade=true;
-              return;
-            }
-        } else if((x1>0) && (y1<7)) {
-            if(tiles[y1+1][x1-1] == 1) {
-              swapTiles(y1,x1,y1+1,x1-1);
-              checkForKing();
-              moveWasMade=true;
-              return;
-            }
-        }
-      
-      }
-    }
-      
-   // Moving Up
-      else {
-        if(randomDirectionX<=0) {
-          if((x1>0) && (y1>0)) {
-            //System.out.println("leftDown: " + tiles[y1+1][x1-1]);
-            if(tiles[y1-1][x1-1] == 1) {
-              swapTiles(y1,x1,y1-1,x1-1);
-              checkForKing();
-              moveWasMade=true;
-              return;
-            }
-          } else if((x1<7) && (y1>0)) {
-            if(tiles[y1-1][x1+1] == 1) {
-              swapTiles(y1,x1,y1-1,x1+1);
-              checkForKing();
-              moveWasMade=true;
-              return;
-            }
-          }
-  // Move to the right
-        } else {
-          if((x1<7) && (y1>0)) {
-            if(tiles[y1-1][x1+1] == 1) {
-              swapTiles(y1,x1,y1-1,x1+1);
-              checkForKing();
-              moveWasMade=true;
-              return;
-            }
-        } else if((x1>0) && (y1>0)) {
-            if(tiles[y1-1][x1-1] == 1) {
-              swapTiles(y1,x1,y1-1,x1-1);
-              checkForKing();
-              moveWasMade=true;
-              return;
-            }
-        }
-      
-      }
-    }
-      checkForKing();
-  }
-      /*int x1 = (int)aiPositions.get(randomChecker);
-      aiPositions.remove(randomChecker);
-      int y1 = (int)aiPositions.get(randomChecker);
-      aiPositions.remove(randomChecker);
-      
-      System.out.println("Size: " + aiPositions.size()); 
-      System.out.println("RED x1:" + x1 + " y1: " + y1);
-      
-      move[0] = y1;
-      move[1] = x1;
-      
-      Random random = new Random();
-      int leftOrRight = (random.nextInt(1)-1);
-      
-      while(!moveWasMade) {
-        if(leftOrRight<0) {
-          if(x1 > 0) {
-            move[3] = x1-1;
-          } else if(x1 < 7) {
-            move[3] = x1+1;
-          }
-        } else {
-        
-          if(x1 < 7) {
-            move[3] = x1+1;
-          } else if(x1 > 0) {
-            move[3] = x1-1;
-          }
-        }
-        
-        if(y1 + 1 <8) {
-          move[2] = y1+1;
-        }
-        else{return;}
-        //leftOrRight = leftOrRight*-1;
-      }
-      setMove(move);
-    }
-    
-    if(isMoveValid()) {
-      moveWasMade=true;
-    }
-
-      
-    
-    swapTiles(move[0],move[1],move[2],move[3]);*/
+    tiles=AIChecker.ai(tiles);
   }
   
 
