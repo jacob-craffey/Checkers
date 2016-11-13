@@ -3,6 +3,9 @@ package checkers;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Random;
 
 import javax.sound.sampled.AudioFormat;
@@ -74,6 +77,8 @@ public class Game implements AIinterface {
   /** File path for WAV. **/
   private static String kingSoundFile = "./src/checkers/sounds/king.wav";
   
+  
+  static LinkedList queue = new LinkedList();
   /** Player turn starts at 1 or 2. **/
   // CHECKSTYLE:OFF
   static int turn = BLACK;
@@ -102,6 +107,7 @@ public class Game implements AIinterface {
         }
       }
     }
+    addUndoPositions();
   }
 
   /** 
@@ -540,12 +546,16 @@ public class Game implements AIinterface {
   * it switches turns. 
   **/
   public static void turn() {
+   // int[][] copyTiles = new int[8][8];
+    addUndoPositions();
+
     if(playerVsComputer) {
       if (turn == BLACK) {
         turnEnd = false;
         secondJump = false;     
-        turn = RED;
-      } 
+        turn = RED;  
+      }
+      
       ai();
       turn=BLACK;
     } 
@@ -558,6 +568,8 @@ public class Game implements AIinterface {
         turnEnd = false;
         secondJump = false;
         turn = BLACK;
+
+
       }
     }
   }
@@ -582,6 +594,8 @@ public class Game implements AIinterface {
 
     getTiles()[firstX][firstY] = getTiles()[secondX][secondY];
     getTiles()[secondX][secondY] = tempTileValue;
+    
+    
   }
 
   /** 
@@ -706,5 +720,22 @@ public class Game implements AIinterface {
     playerVsComputer = mode;
   }
   
+  public static void undoQueue() {
+    for(int y=7; y>=0;y--) {
+      for(int x=7; x>=0;x--) {
+
+        if(!queue.isEmpty())
+          tiles[y][x]=(int) queue.pollLast();
+      }
+    }
+  }
+
+  public static void addUndoPositions() {
+    for(int y=0;y<8;y++) {
+      for(int x=0;x<8;x++) {
+        queue.add(tiles[y][x]);
+      }  
+    }
+  }
   
 }

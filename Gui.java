@@ -204,6 +204,11 @@ public class Gui extends JPanel {
         SaveLoad.load();
         reloadBoard();
       }
+      
+      if (menuUndo == event.getSource()) {
+        Game.undoQueue();
+        reloadBoard();
+      }
     }
 
     /**

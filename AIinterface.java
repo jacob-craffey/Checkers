@@ -2,6 +2,7 @@ package checkers;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.*;
 
 public interface AIinterface{
 
@@ -27,10 +28,11 @@ public interface AIinterface{
   /** Dimension of the board.**/
   static final int BOARD_DIMENSION = 8;
   
-  
+
   public static int[][] swapTiles(int[][] tiles, final int firstX,
     final int firstY, final int secondX,
     final int secondY) {
+
     
     int temp = tiles[firstX][firstY];
     tiles[firstX][firstY] = tiles[secondX][secondY];
@@ -52,13 +54,14 @@ public interface AIinterface{
     return tiles;
   }
   
-
+  
+  
   public static int[][] ai(int[][] tiles) {
+ 
     ArrayList<Integer> aiPositions = new ArrayList();
     boolean moveWasMade=false;
     int RED = 3;
 
-    
     for(int y=0; y<8; y++) {
       for(int x=0; x<8; x++) {
         if( (tiles[y][x] == RED) || (tiles[y][x] == RED_KING) ) {
@@ -198,7 +201,7 @@ public interface AIinterface{
   public static int[][] aijumpavailable(int[][] tiles, int y, int x) {
     if( (y+2<8) && (x+2<8) ) {
       if((tiles[y+1][x+1]==BLACK  || tiles[y+1][x+1]==BLACK_KING) && (tiles[y+2][x+2]==1) ) {
-        swapTiles(tiles,y,x,y+2,x+2);
+        tiles=swapTiles(tiles,y,x,y+2,x+2);
         tiles[y+1][x+1] = 1;
         tiles=checkForKing(tiles);
         tiles=aijumpavailable(tiles,y+2,x+2);
