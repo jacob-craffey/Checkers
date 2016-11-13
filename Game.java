@@ -16,7 +16,7 @@ import javax.sound.sampled.DataLine;
  * Checkers game. This class holds the executable commands for carrying 
  * out a game of checkers. 
  */
-public class Game {
+public class Game implements AIinterface {
   /** Integers. **/
   private static final int ONE = 1;
   /** Integers. **/
@@ -182,7 +182,7 @@ public class Game {
    *    on the top or bottom of the board.
    **/
   public static void checkForKing() {
-    tiles = AIChecker.checkForKing(tiles);
+    tiles = AIinterface.checkForKing(tiles);
   }
 
   /** 
@@ -555,7 +555,7 @@ public class Game {
   }
   
   public static void ai() {
-    tiles=AIChecker.ai(tiles);
+    tiles=AIinterface.ai(tiles);
   }
   
 
