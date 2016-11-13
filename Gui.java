@@ -85,7 +85,7 @@ public class Gui extends JPanel {
 
   /** Default if players don't choose their colors. **/
   public Gui() {
-    change(Color.RED, Color.BLACK);
+    change(Color.RED, Color.BLACK, true);
   }
 
   /**
@@ -94,9 +94,10 @@ public class Gui extends JPanel {
   * @param color1  the color of player 1
   * @param color2  the color of player 2
   **/
-  public Gui(final Color color1, final Color color2) {
+  public Gui(final Color color1, final Color color2, boolean playerVsComputer) {
     game = new Game();
-
+    game.chooseTurn(playerVsComputer);
+    
     // Sets up necessary elements for interface
     tiles = new JButton[eightNum][eightNum];
     final JFrame frame = new JFrame("Checkers");
@@ -171,8 +172,8 @@ public class Gui extends JPanel {
   * @param col1 Color of player1
   * @param col2  Color of player2
   **/
-  public static void change(final Color col1, final Color col2) {
-    new Gui(col1, col2);
+  public static void change(final Color col1, final Color col2, boolean playerVsComputer) {
+    new Gui(col1, col2, playerVsComputer);
   }
 
   /**

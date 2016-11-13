@@ -41,11 +41,12 @@ public class ChooseColor extends JPanel {
   /** Integers. **/
   private static final int SIX_HUNDRED = 600;
 
+
   /**
    *  Creates two drop down windows that let players choose 
    *  their checkers' colors. 
    **/
-  public /*Color*/ ChooseColor() {
+  public /*Color*/ ChooseColor(boolean playerVsComputer) {
     final String[] colors = {"Red", "Orange", "Yellow", 
         "Green", "Blue", "Purple", "Pink", "Black"};
 
@@ -132,9 +133,16 @@ public class ChooseColor extends JPanel {
         }
 
         //new GUI();
-        Gui.change(color1, color2);
+        Gui.change(color1, color2, playerVsComputer);
       }
     });
     //return color1;
   }
+
+
+  public static void choose(boolean playerVsComputer) {
+    // TODO Auto-generated method stub
+    new ChooseColor(playerVsComputer);
+  }
+
 }

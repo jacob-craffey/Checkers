@@ -77,6 +77,8 @@ public class Game implements AIinterface {
   /** Player turn starts at 1 or 2. **/
   // CHECKSTYLE:OFF
   static int turn = BLACK;
+  
+  static boolean playerVsComputer=false;
   //static int turn = new Random().nextInt(TWO) + TWO;
   //CHECKSTYLE:ON
 
@@ -84,8 +86,6 @@ public class Game implements AIinterface {
   * Sets up the game board. 
   **/
   public Game() {
-    
-    
     
     for (int ytile = 0; ytile < BOARD_DIMENSION; ytile++) {
       for (int xtile = 0; xtile < BOARD_DIMENSION; xtile++) {
@@ -540,18 +540,26 @@ public class Game implements AIinterface {
   * it switches turns. 
   **/
   public static void turn() {
-    if (turn == BLACK) {
-      turnEnd = false;
-      secondJump = false;     
-      turn = RED;
-    } /*else {
-      turnEnd = false;
-      secondJump = false;
-      turn = BLACK;
+    if(playerVsComputer) {
+      if (turn == BLACK) {
+        turnEnd = false;
+        secondJump = false;     
+        turn = RED;
+      } 
       ai();
-    } */
-    ai();
-    turn=BLACK;
+      turn=BLACK;
+    } 
+    else {
+      if (turn == BLACK) {
+        turnEnd = false;
+        secondJump = false;     
+        turn = RED;
+      } else {
+        turnEnd = false;
+        secondJump = false;
+        turn = BLACK;
+      }
+    }
   }
   
   public static void ai() {
@@ -692,6 +700,11 @@ public class Game implements AIinterface {
     Game.tiles = tiles;
   }
   //CHECKSTYLE:ON
+
+  public void chooseTurn(boolean mode) {
+    // TODO Auto-generated method stub
+    playerVsComputer = mode;
+  }
   
   
 }
