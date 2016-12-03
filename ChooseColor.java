@@ -35,8 +35,6 @@ public class ChooseColor extends JPanel {
   /** Integers. **/
   private static final int SEVEN = 7;
   /** Integers. **/
-  private static final int EIGHT = 8;
-  /** Integers. **/
   private static final int ONE_FIFTY = 150;
   /** Integers. **/
   private static final int SIX_HUNDRED = 600;
@@ -45,8 +43,12 @@ public class ChooseColor extends JPanel {
   /**
    *  Creates two drop down windows that let players choose 
    *  their checkers' colors. 
+   *  
+   *  @param playerVsComputer   boolean for checking if 
+   *  							player vs computer option
+   *  							was checked.
    **/
-  public /*Color*/ ChooseColor(boolean playerVsComputer) {
+  public /*Color*/ ChooseColor(final boolean playerVsComputer) {
     final String[] colors = {"Red", "Orange", "Yellow", 
         "Green", "Blue", "Purple", "Pink", "Black"};
 
@@ -133,14 +135,67 @@ public class ChooseColor extends JPanel {
         }
 
         //new GUI();
-        Gui.change(color1, color2, playerVsComputer);
+        //Gui.change(color1, color2, playerVsComputer);
+        chooseSize(color1, color2, playerVsComputer);
       }
     });
     //return color1;
   }
+  
+  
+  public /*Color*/ void chooseSize(final Color c1, final Color c2, final boolean playerVsComputer) {
+    final String[] sizes = {"Small", "Medium", "Large"};
+    //final int frameSize = 800;
+    
+    JFrame frame3 = new JFrame("Choose Size");
+    frame3.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame3.setSize(SIX_HUNDRED, ONE_FIFTY);
+    frame3.setLayout(new FlowLayout());
+    frame3.setVisible(true);
+    
+    JPanel panel3 = new JPanel();
+    panel3.setLayout(new FlowLayout());
+    frame3.add(panel3);
+    
+    JComboBox<String> comboBox = new JComboBox<String>(sizes);
+    comboBox.setMaximumSize(comboBox.getPreferredSize());
+    comboBox.setVisible(true);
+    
+    JLabel label = new JLabel("Select Size for Checkers Board");
+    JButton button = new JButton("OK");
+    
+    panel3.add(label);
+    panel3.add(comboBox);
+    panel3.add(button);
+    
+    button.addActionListener(new ActionListener() {
+      public void actionPerformed(final ActionEvent pressOk) {
+        int frameSize = 800;
+        if (comboBox.getSelectedIndex() == 0) {
+          frameSize = 400;
+        }
+        if (comboBox.getSelectedIndex() == 1) {
+          frameSize = 600;
+        }
+        if (comboBox.getSelectedIndex() == 2) {
+          frameSize = 800;
+        }
+    
+  //new GUI();
+    Gui.change(c1, c2, playerVsComputer, frameSize);
+      }
+    });
+  }
 
+  /**
+   *  Allows the users to choose the color for the computer if 
+   *  player Vs computer option was selected.
+   *  @param playerVsComputer   boolean for checking if 
+   *  							player vs computer option
+   *  							was checked.  
+   **/
 
-  public static void choose(boolean playerVsComputer) {
+  public static void choose(final boolean playerVsComputer) {
     // TODO Auto-generated method stub
     new ChooseColor(playerVsComputer);
   }

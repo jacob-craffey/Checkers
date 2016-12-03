@@ -85,7 +85,7 @@ public class Gui extends JPanel {
 
   /** Default if players don't choose their colors. **/
   public Gui() {
-    change(Color.RED, Color.BLACK, true);
+    change(Color.RED, Color.BLACK, true, 800);
   }
 
   /**
@@ -93,8 +93,10 @@ public class Gui extends JPanel {
   * 
   * @param color1  the color of player 1
   * @param color2  the color of player 2
+  * @param playerVsComputer  Boolean stating if AI is on
   **/
-  public Gui(final Color color1, final Color color2, boolean playerVsComputer) {
+  public Gui(final Color color1, final Color color2,
+		  final boolean playerVsComputer, final int frameSize) {
     game = new Game();
     game.chooseTurn(playerVsComputer);
     
@@ -108,6 +110,7 @@ public class Gui extends JPanel {
     currentTurn = new JLabel(game.getTurn());
     GridLayout gridLayout = new GridLayout(eightNum, eightNum);
     panel.setLayout(gridLayout);
+
 
     //Sets up the Jmenu
     menuBar = new JMenuBar();
@@ -159,10 +162,10 @@ public class Gui extends JPanel {
     // necessary frame properties
     frame.setVisible(true);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setSize(eightHundred, eightHundred);
+    frame.setSize(frameSize, frameSize); // 800 x 800
     frame.add(panel);
     frame.add(currentTurnPanel, BorderLayout.NORTH);
-    frame.setResizable(false);
+    frame.setResizable(true);
   }
 
   /**
@@ -171,9 +174,12 @@ public class Gui extends JPanel {
   * 
   * @param col1 Color of player1
   * @param col2  Color of player2
+  * @param playerVsComputer  Boolean stating if AI is on
+   * @param frameSize 
   **/
-  public static void change(final Color col1, final Color col2, boolean playerVsComputer) {
-    new Gui(col1, col2, playerVsComputer);
+  public static void change(final Color col1, final Color col2,
+		  final boolean playerVsComputer, int frameSize) {
+    new Gui(col1, col2, playerVsComputer, frameSize);
   }
 
   /**
@@ -232,6 +238,7 @@ public class Gui extends JPanel {
   **/
   private BufferedImage getImage(final String filename) {
     try {
+    	//System.out.println(filename);
       InputStream input = getClass().getResourceAsStream(filename);
       return ImageIO.read(input);
     } catch (IOException noImage) {
