@@ -138,12 +138,15 @@ public class Gui extends JPanel {
     imageIcon = new ImageIcon[sixNum];
     for (int tileValue = 0; tileValue < sixNum; tileValue++) {
       imageIcon[tileValue] = new ImageIcon(
-          "./src/checkers/tiles/" + tileValue + ".jpg");
+         "./src/checkers/tiles/" + tileValue + ".jpg");
     }
 
-    changeColors(2, color1); // changes checkers to match players' selected
+    changeColors(2, color1, frameSize); // changes checkers to match players' selected
     // colors
-    changeColors(threeNum, color2);
+    changeColors(threeNum, color2, frameSize);
+    
+    changeColors(4, color1, frameSize);
+    changeColors(5, color2, frameSize);
 
     // nested loop to add the 2d array of buttons
     for (int xtile = 0; xtile < eightNum; xtile++) {
@@ -255,12 +258,35 @@ public class Gui extends JPanel {
   *     color you want to change.
   * @param col  The color the checkers will be switching too.
   **/
-  public final void changeColors(final int playerNum, final Color col) {
+  /*public final void changeColors(final int playerNum, final Color col, final int size) {
     // change colors for tile png
     image = getImage("tiles/" + playerNum + ".jpg");
     g2 = image.createGraphics();
     g2.setColor(col);
-    g2.fillOval(0, 0, hundred, hundred);
+    if(size == 800) {
+      g2.fillOval(0, 0, hundred, hundred);
+    } else if(size == 600) {
+      g2.fillOval(20, 20, 60, 60);
+    } else {
+      g2.fillOval(30, 25, 45, 45);
+    }
+    imageIcon[playerNum] = new ImageIcon(image);
+  }*/
+  
+  public final void changeColors(final int playerNum, final Color col, final int size) {
+    // change colors for tile png
+    image = getImage("tiles/" + playerNum + ".jpg");
+    g2 = image.createGraphics();
+    g2.setColor(col);
+    g2.fillOval(0, 0, hundred, hundred);   
+
+    if (playerNum > 3){
+      g2.setColor(Color.yellow);
+      g2.fillRect(25, 50, 50, 20);
+      g2.fillPolygon(new int[] {25, 25, 40}, new int[] {50, 20, 50}, 3);
+      g2.fillPolygon(new int[] {40, 50, 60}, new int[] {50, 20, 50}, 3);
+      g2.fillPolygon(new int[] {60, 75, 75}, new int[] {50, 20, 50}, 3);
+    }
     imageIcon[playerNum] = new ImageIcon(image);
   }
 }

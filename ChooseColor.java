@@ -48,8 +48,8 @@ public class ChooseColor extends JPanel {
    *  							player vs computer option
    *  							was checked.
    **/
-  public /*Color*/ ChooseColor(final boolean playerVsComputer) {
-    final String[] colors = {"Red", "Orange", "Yellow", 
+  public /*Color*/ ChooseColor(boolean playerVsComputer) {
+    final String[] colors = {"Red", "Orange", 
         "Green", "Blue", "Purple", "Pink", "Black"};
 
     JFrame frame2 = new JFrame("Colors");
@@ -91,21 +91,18 @@ public class ChooseColor extends JPanel {
           color1 = Color.ORANGE;
         }
         if (comboBox.getSelectedIndex() == 2) {
-          color1 = Color.YELLOW;
-        }
-        if (comboBox.getSelectedIndex() == THREE) {
           color1 = Color.GREEN;
         }
-        if (comboBox.getSelectedIndex() == FOUR) {
+        if (comboBox.getSelectedIndex() == THREE) {
           color1 = Color.BLUE;
         }
-        if (comboBox.getSelectedIndex() == FIVE) {
+        if (comboBox.getSelectedIndex() == FOUR) {
           color1 = Color.MAGENTA;
         }
-        if (comboBox.getSelectedIndex() == SIX) {
+        if (comboBox.getSelectedIndex() == FIVE) {
           color1 = Color.PINK;
         }
-        if (comboBox.getSelectedIndex() == SEVEN) {
+        if (comboBox.getSelectedIndex() == SIX) {
           color1 = Color.BLACK;
         }
 
@@ -116,21 +113,18 @@ public class ChooseColor extends JPanel {
           color2 = Color.ORANGE;
         }
         if (comboBox2.getSelectedIndex() == 2) {
-          color2 = Color.YELLOW;
-        }
-        if (comboBox2.getSelectedIndex() == THREE) {
           color2 = Color.GREEN;
         }
-        if (comboBox2.getSelectedIndex() == FOUR) {
+        if (comboBox2.getSelectedIndex() == THREE) {
           color2 = Color.BLUE;
         }
-        if (comboBox2.getSelectedIndex() == FIVE) {
+        if (comboBox2.getSelectedIndex() == FOUR) {
           color2 = Color.MAGENTA;
         }
-        if (comboBox2.getSelectedIndex() == SIX) {
+        if (comboBox2.getSelectedIndex() == FIVE) {
           color2 = Color.PINK;
         }
-        if (comboBox.getSelectedIndex() == SEVEN) {
+        if (comboBox.getSelectedIndex() == SIX) {
           color1 = Color.BLACK;
         }
 
