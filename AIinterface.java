@@ -95,8 +95,8 @@ public interface AIinterface {
     for (int y = 0; y < EIGHT; y++) {
       for (int x = 0; x < EIGHT; x++) {
         if ((tiles[y][x] == red) || (tiles[y][x] == RED_KING)) {
-          System.out.println("RED x:" + x + " y: " + y + " has: "
-        		  + tiles[y][x]);  
+          //System.out.println("RED x:" + x + " y: " + y + " has: "
+        	//	  + tiles[y][x]);  
           aiPositions.add(y);
           aiPositions.add(x);
           tiles = aijumpavailable(tiles, y, x);

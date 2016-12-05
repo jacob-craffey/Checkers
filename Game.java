@@ -1,12 +1,11 @@
 package checkers;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Random;
+
+
+
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -28,8 +27,6 @@ public class Game implements AIinterface {
   private static final int THREE = 3;
   /** Integers. **/
   private static final int FOUR = 4;
-  /** Integers. **/
-  private static final int SIX = 6;
   /** Integers. **/
   private static final int SEVEN = 7;
   /** Integers. **/
@@ -73,17 +70,17 @@ public class Game implements AIinterface {
   /** Dimension of the board.**/
   static final int BOARD_DIMENSION = 8;
   /** File path for WAV. **/
-  private static String jumpSoundFile = "./src/checkers/sounds/jump.wav";
-  /** File path for WAV. **/
-  private static String kingSoundFile = "./src/checkers/sounds/king.wav";
-  
-  
-  static LinkedList queue = new LinkedList();
+  /** String for holding the sound file for jumping.**/
+  private String jumpSoundFile = "./src/checkers/sounds/jump.wav";
+  /** queue for managing the undo command. **/
+  private static LinkedList<Integer> queue = new LinkedList<Integer>();
+  /** queue for managing the undo command. **/
+  private static LinkedList<Integer> turnQueue = new LinkedList<Integer>();
   /** Player turn starts at 1 or 2. **/
   // CHECKSTYLE:OFF
-  static int turn = BLACK;
-  
-  static boolean playerVsComputer=false;
+  private static int turn = BLACK;
+  /** boolean tracking if AI is on or off. **/
+  private static boolean playerVsComputer = false;
   //static int turn = new Random().nextInt(TWO) + TWO;
   //CHECKSTYLE:ON
 
@@ -126,7 +123,7 @@ public class Game implements AIinterface {
   * @return  String of the color whose turn it is.
   * @see  String
   **/
-  public final String getTurn() {
+  public final static String getTurn() {
     if (turn == BLACK) {
       return ("1");
     } else {
@@ -547,18 +544,17 @@ public class Game implements AIinterface {
   **/
   public static void turn() {
    // int[][] copyTiles = new int[8][8];
+    //System.out.println("Turn");
     addUndoPositions();
-
-    if(playerVsComputer) {
+    if (playerVsComputer) {
       if (turn == BLACK) {
         turnEnd = false;
-        secondJump = false;     
+        secondJump = false;    
         turn = RED;  
       }
-      
       ai();
-      turn=BLACK;
-    } 
+      turn = BLACK;
+    }
     else {
       if (turn == BLACK) {
         turnEnd = false;
@@ -569,13 +565,15 @@ public class Game implements AIinterface {
         secondJump = false;
         turn = BLACK;
 
-
       }
     }
   }
-  
+  /** 
+   * Connects the game to the AI interface.
+   **/
   public static void ai() {
-    tiles=AIinterface.ai(tiles);
+    tiles = AIinterface.ai(tiles);
+    playerWon(tiles);
   }
   
 
@@ -608,6 +606,7 @@ public class Game implements AIinterface {
   **/
   public static boolean playerWon(final int[][] ptiles) {
     // int noWinner = 0;
+    
     int blackCheckers = 0;
     int redCheckers = 0;
 
@@ -691,9 +690,9 @@ public class Game implements AIinterface {
   /** 
    * Setter for move array.
    * 
-   * @param move array. **/
-  public static void setMove(final int[] move) {
-    Game.move = move;
+   * @param move2 array. **/
+  public static void setMove(final int[] move2) {
+    Game.move = move2;
   }
   //CHECKSTYLE:ON
 
@@ -707,32 +706,82 @@ public class Game implements AIinterface {
 
   //CHECKSTYLE:OFF
   /** 
-   * Setter foe tiles array.
+   * Setter for tiles array.
    * 
-   * @param tiles array. **/
-  public static void setTiles(final int[][] tiles) {
-    Game.tiles = tiles;
+   * @param tiles2 array. **/
+  public static void setTiles(final int[][] tiles2) {
+    Game.tiles = tiles2;
   }
   //CHECKSTYLE:ON
 
-  public void chooseTurn(boolean mode) {
+  /** 
+   * Choose if AI is on.
+   * 
+   * @param mode  determines if AI is on or not **/
+  public final void chooseTurn(final boolean mode) {
     // TODO Auto-generated method stub
     playerVsComputer = mode;
   }
-  
-  public static void undoQueue() {
-    for(int y=7; y>=0;y--) {
-      for(int x=7; x>=0;x--) {
-
-        if(!queue.isEmpty())
-          tiles[y][x]=(int) queue.pollLast();
+  /** 
+   * Method for interaction with the undo button. 
+   * Sets undos in motion.
+   * **/
+  public static void undoQueue() {  
+    int i =0;
+    int lastPosition=0;
+    
+    if (!queue.isEmpty()) {
+        if (turn == BLACK) {
+          turnEnd = false;
+          secondJump = false; 
+          turn = RED;
+        } else {
+          turnEnd = false;
+          secondJump = false; 
+          turn = BLACK;
+        }      
       }
+    if (!queue.isEmpty()) {
+      for (int y = SEVEN; y >= 0; y--) {
+        for (int x = SEVEN; x >= 0; x--) {
+          if (!queue.isEmpty()) {
+             lastPosition = (int) queue.pollLast();
+             if(tiles[y][x] != lastPosition) {
+               i++;
+             }
+             tiles[y][x] = lastPosition;
+          }
+        }
+      }
+    } else {
+      Game game = new Game();
+    }
+    
+    if (!queue.isEmpty()) {
+      if (i==0) {
+        System.out.println("difference found");
+        for (int y = SEVEN; y >= 0; y--) {
+          for (int x = SEVEN; x >= 0; x--) {
+            if (!queue.isEmpty()) {
+               lastPosition = (int) queue.pollLast();
+               tiles[y][x] = lastPosition;
+            }
+          }
+        }
+      }
+    } else {
+      Game game = new Game();
     }
   }
+  
 
+  /** 
+   * Method for loading up undo paths into the queue.
+   * **/
   public static void addUndoPositions() {
-    for(int y=0;y<8;y++) {
-      for(int x=0;x<8;x++) {
+    //System.out.println("Undo");
+    for (int y = 0; y < EIGHT; y++) {
+      for (int x = 0; x < EIGHT; x++) {
         queue.add(tiles[y][x]);
       }  
     }
