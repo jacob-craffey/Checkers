@@ -1,16 +1,13 @@
 package checkers;
 
-//CHECKSTYLE:OFF
-import java.awt.Color;
-
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class TestCheckers {
 
-	Game game1 = new Game();
-	StartGame start = new StartGame();
+	Game game1 = new Game(false);
+	//StartGame start = new StartGame();
 	int[][] grid = Game.getTiles();
 	int[][] grid1 = new int[8][8];
 	int[][] grid2 = new int[8][8];
@@ -48,7 +45,7 @@ public class TestCheckers {
 	public void testBlackKing() {
 		Game.turn = Game.BLACK;
 		grid[0][0] = Game.BLACK;
-		game1.checkForKing();
+		Game.checkForKing();
 	}
 
 	// red king
@@ -56,34 +53,34 @@ public class TestCheckers {
 	public void testBlackKing2() {
 		Game.turn = Game.RED;
 		grid[7][7] = Game.RED;
-		game1.checkForKing();
+		Game.checkForKing();
 	}
 
   @Test
   public void testWinner() {
 	  grid1[0][0] = Game.RED;
 	  grid1[1][1] = Game.BLACK;
-	  assertEquals(game1.playerWon(grid1), false);
+	  assertEquals(Game.playerWon(grid1), false);
 	  grid1[1][1] = Game.BROWN_SPACE;
-	  assertEquals(game1.playerWon(grid1), true);
+	  assertEquals(Game.playerWon(grid1), true);
 	  grid1[1][1] = Game.BLACK;
 	  grid1[0][0] = Game.BROWN_SPACE;
-	  assertEquals(game1.playerWon(grid1), true);
+	  assertEquals(Game.playerWon(grid1), true);
 	}
 
   @Test
   public void isThereAKing() {
 	  grid1[0][0] = Game.RED;
 	  grid1[1][1] = Game.BLACK;
-	  assertEquals(game1.playerWon(grid), false);
+	  assertEquals(Game.playerWon(grid), false);
 	}
 
 	@Test
 	public void testTurn() {
 		Game.turn = Game.BLACK;
-		assertEquals(game1.getTurn(), "1");
+		assertEquals(Game.getTurn(), "1");
 		Game.turn = Game.RED;
-		assertEquals(game1.getTurn(), "2");
+		assertEquals(Game.getTurn(), "2");
 	}
 
 	@Test
@@ -92,7 +89,7 @@ public class TestCheckers {
 		grid2[5][5] = Game.BLACK;
 		game1.setMove(5, 5);
 		game1.setMove(4, 4);
-		assertEquals(game1.isMoveValid(), true);
+		assertEquals(Game.isMoveValid(), true);
 	}
 
 	@Test
@@ -101,7 +98,7 @@ public class TestCheckers {
 		grid2[5][5] = Game.BLACK;
 		game1.setMove(5, 5);
 		game1.setMove(4, 1);
-		assertEquals(game1.isMoveValid(), false);
+		assertEquals(Game.isMoveValid(), false);
 	}
 
 	@Test
@@ -112,7 +109,7 @@ public class TestCheckers {
 		Game.getMove()[1] = 2;
 		Game.getMove()[2] = 4;
 		Game.getMove()[3] = 4;
-		assertEquals(game1.isMoveValid(), false);
+		assertEquals(Game.isMoveValid(), false);
 	}
 
 	@Test
@@ -121,7 +118,7 @@ public class TestCheckers {
 		grid2[2][2] = Game.RED;
 		Game.getMove()[2] = 3;
 		Game.getMove()[3] = 3;
-		assertEquals(game1.isMoveValid(), true);
+		assertEquals(Game.isMoveValid(), true);
 	}
 
 	// Black up-right
@@ -437,7 +434,7 @@ public class TestCheckers {
 	// Invalid play sound input
 	@Test
 	public void testPlaySound() {
-		game1.playSound("invalid fileName");
+		Game.playSound("invalid fileName");
 	}
 
 	// black king move
