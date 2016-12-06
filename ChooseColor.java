@@ -33,11 +33,13 @@ public class ChooseColor extends JPanel {
   /** Integers. **/
   private static final int SIX = 6;
   /** Integers. **/
-  private static final int SEVEN = 7;
-  /** Integers. **/
   private static final int ONE_FIFTY = 150;
   /** Integers. **/
+  private static final int FOUR_HUNDRED = 400;
+  /** Integers. **/
   private static final int SIX_HUNDRED = 600;
+  /** Integers. **/  
+  private static final int EIGHT_HUNDRED = 800;
 
 
   /**
@@ -48,7 +50,7 @@ public class ChooseColor extends JPanel {
    *  							player vs computer option
    *  							was checked.
    **/
-  public /*Color*/ ChooseColor(boolean playerVsComputer) {
+  public /*Color*/ ChooseColor(final boolean playerVsComputer) {
     final String[] colors = {"Red", "Orange", 
         "Green", "Blue", "Purple", "Pink", "Black"};
 
@@ -164,15 +166,15 @@ public class ChooseColor extends JPanel {
     
     button.addActionListener(new ActionListener() {
       public void actionPerformed(final ActionEvent pressOk) {
-        int frameSize = 800;
+        int frameSize = EIGHT_HUNDRED;
         if (comboBox.getSelectedIndex() == 0) {
-          frameSize = 400;
+          frameSize = FOUR_HUNDRED;
         }
         if (comboBox.getSelectedIndex() == 1) {
-          frameSize = 600;
+          frameSize = SIX_HUNDRED;
         }
         if (comboBox.getSelectedIndex() == 2) {
-          frameSize = 800;
+          frameSize = EIGHT_HUNDRED;
         }
     
   //new GUI();
@@ -188,9 +190,7 @@ public class ChooseColor extends JPanel {
    *  							player vs computer option
    *  							was checked.  
    **/
-
   public static void choose(final boolean playerVsComputer) {
-    // TODO Auto-generated method stub
     new ChooseColor(playerVsComputer);
   }
 

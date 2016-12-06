@@ -34,6 +34,9 @@ public class Gui extends JPanel {
   private final int three = 3;
   
   /** Integers. **/
+  private final int four = 4;
+  
+  /** Integers. **/
   private final int five = 5;
   
   /** Integers. **/
@@ -58,13 +61,16 @@ public class Gui extends JPanel {
   private final int fifty = 50;
   
   /** Integers. **/
-  private final int sixty= 60;
+  private final int sixty = 60;
   
   /** Integers. **/
   private final int seventyFive = 75;
   
   /** Integers. **/
   private final int hundred = 100;
+  
+  /** Integers. **/
+  private final int sixHundred = 600;
   
   /** Integers. **/
   private final int eightHundred = 800;
@@ -110,7 +116,7 @@ public class Gui extends JPanel {
 
   /** Default if players don't choose their colors. **/
   public Gui() {
-    change(Color.RED, Color.BLACK, true, 800);
+    change(Color.RED, Color.BLACK, true, eightHundred);
   }
 
   /**
@@ -119,6 +125,7 @@ public class Gui extends JPanel {
   * @param color1  the color of player 1
   * @param color2  the color of player 2
   * @param playerVsComputer  Boolean stating if AI is on
+  * @param frameSize size of the game board
   **/
   public Gui(final Color color1, final Color color2,
 		  final boolean playerVsComputer, final int frameSize) {
@@ -166,12 +173,13 @@ public class Gui extends JPanel {
          "./src/checkers/tiles/" + tileValue + ".jpg");
     }
 
-    changeColors(2, color1, frameSize); // changes checkers to match players' selected
+    changeColors(2, color1, frameSize); 
+    // changes checkers to match players' selected
     // colors
     changeColors(three, color2, frameSize);
     
-    changeColors(4, color1, frameSize);
-    changeColors(5, color2, frameSize);
+    changeColors(four, color1, frameSize);
+    changeColors(five, color2, frameSize);
 
     // nested loop to add the 2d array of buttons
     for (int xtile = 0; xtile < eightNum; xtile++) {
@@ -206,7 +214,7 @@ public class Gui extends JPanel {
    * @param frameSize 
   **/
   public static void change(final Color col1, final Color col2,
-		  final boolean playerVsComputer, int frameSize) {
+		  final boolean playerVsComputer, final int frameSize) {
     new Gui(col1, col2, playerVsComputer, frameSize);
   }
 
@@ -302,9 +310,9 @@ public class Gui extends JPanel {
         g2.fillPolygon(new int[] {sixty, seventyFive, seventyFive}, 
             new int[] {fifty, twenty, fifty}, three);
       }
-    } else if (size == 600) {
+    } else if (size == sixHundred) {
       g2.fillOval(twenty, twenty, sixty, sixty);
-      if (playerNum > three){
+      if (playerNum > three) {
         g2.setColor(Color.yellow);
         g2.fillRect(twentyFive / 2 + twentyFive, fifty / 2 + twentyFive, 
             fifty / 2, twenty / 2);
