@@ -3,9 +3,7 @@ package checkers;
 import java.io.File;
 import java.util.Arrays;
 import java.util.LinkedList;
-
-
-
+import java.util.Random;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -74,20 +72,23 @@ public class Game implements AIinterface {
   private String jumpSoundFile = "./src/checkers/sounds/jump.wav";
   /** queue for managing the undo command. **/
   private static LinkedList<Integer> queue = new LinkedList<Integer>();
-  /** queue for managing the undo command. **/
-  private static LinkedList<Integer> turnQueue = new LinkedList<Integer>();
   /** Player turn starts at 1 or 2. **/
   // CHECKSTYLE:OFF
-  private static int turn = BLACK;
+  //private static int turn = BLACK;
   /** boolean tracking if AI is on or off. **/
   private static boolean playerVsComputer = false;
-  //static int turn = new Random().nextInt(TWO) + TWO;
+  static int turn = new Random().nextInt(TWO) + TWO;
   //CHECKSTYLE:ON
 
   /** 
   * Sets up the game board. 
   **/
-  public Game() {
+  public Game(boolean playerVsCom) {
+    if(playerVsCom == true) {
+      System.out.println("pvc: " + getTurn());
+      turn = BLACK;
+      playerVsComputer = playerVsCom;
+    }
     
     for (int ytile = 0; ytile < BOARD_DIMENSION; ytile++) {
       for (int xtile = 0; xtile < BOARD_DIMENSION; xtile++) {
@@ -123,7 +124,7 @@ public class Game implements AIinterface {
   * @return  String of the color whose turn it is.
   * @see  String
   **/
-  public final static String getTurn() {
+  public static final String getTurn() {
     if (turn == BLACK) {
       return ("1");
     } else {
@@ -554,8 +555,7 @@ public class Game implements AIinterface {
       }
       ai();
       turn = BLACK;
-    }
-    else {
+    } else {
       if (turn == BLACK) {
         turnEnd = false;
         secondJump = false;     
@@ -727,8 +727,8 @@ public class Game implements AIinterface {
    * Sets undos in motion.
    * **/
   public static void undoQueue() {  
-    int i =0;
-    int lastPosition=0;
+    int i = 0;
+    int lastPosition = 0;
     
     if (!queue.isEmpty()) {
         if (turn == BLACK) {
@@ -746,7 +746,7 @@ public class Game implements AIinterface {
         for (int x = SEVEN; x >= 0; x--) {
           if (!queue.isEmpty()) {
              lastPosition = (int) queue.pollLast();
-             if(tiles[y][x] != lastPosition) {
+             if (tiles[y][x] != lastPosition) {
                i++;
              }
              tiles[y][x] = lastPosition;
@@ -754,11 +754,11 @@ public class Game implements AIinterface {
         }
       }
     } else {
-      Game game = new Game();
+      Game game = new Game(playerVsComputer);
     }
     
     if (!queue.isEmpty()) {
-      if (i==0) {
+      if (i == 0) {
         System.out.println("difference found");
         for (int y = SEVEN; y >= 0; y--) {
           for (int x = SEVEN; x >= 0; x--) {
@@ -770,7 +770,7 @@ public class Game implements AIinterface {
         }
       }
     } else {
-      Game game = new Game();
+      Game game = new Game(playerVsComputer);
     }
   }
   

@@ -31,13 +31,38 @@ import javax.swing.JPanel;
 public class Gui extends JPanel {
   
   /** Integers. **/
-  private final int threeNum = 3;
+  private final int three = 3;
+  
+  /** Integers. **/
+  private final int five = 5;
   
   /** Integers. **/
   private final int sixNum = 6;
   
   /** Integers. **/
   private final int eightNum = 8;
+  
+  /** Integers. **/
+  private final int twenty = 20;
+  
+  /** Integers. **/
+  private final int twentyFive = 25;
+  
+  /** Integers. **/
+  private final int thirtyFive = 35;
+  
+  /** Integers. **/
+  private final int fourty = 40;
+  
+  /** Integers. **/
+  private final int fifty = 50;
+  
+  /** Integers. **/
+  private final int sixty= 60;
+  
+  /** Integers. **/
+  private final int seventyFive = 75;
+  
   /** Integers. **/
   private final int hundred = 100;
   
@@ -97,7 +122,7 @@ public class Gui extends JPanel {
   **/
   public Gui(final Color color1, final Color color2,
 		  final boolean playerVsComputer, final int frameSize) {
-    game = new Game();
+    game = new Game(playerVsComputer);
     game.chooseTurn(playerVsComputer);
     
     // Sets up necessary elements for interface
@@ -143,7 +168,7 @@ public class Gui extends JPanel {
 
     changeColors(2, color1, frameSize); // changes checkers to match players' selected
     // colors
-    changeColors(threeNum, color2, frameSize);
+    changeColors(three, color2, frameSize);
     
     changeColors(4, color1, frameSize);
     changeColors(5, color2, frameSize);
@@ -257,38 +282,64 @@ public class Gui extends JPanel {
   * @param playerNum  The number of the player whose 
   *     color you want to change.
   * @param col  The color the checkers will be switching too.
+  * @param size Size of the board
   **/ 
-  public final void changeColors(final int playerNum, final Color col, final int size) {
+  public final void changeColors(final int playerNum, 
+      final Color col, final int size) {
     // change colors for tile png
     image = getImage("tiles/" + playerNum + ".jpg");
     g2 = image.createGraphics();
     g2.setColor(col);
-    if(size == 800) {
+    if (size == eightHundred) {
       g2.fillOval(0, 0, hundred, hundred);
-      if (playerNum > 3){
+      if (playerNum > three) {
         g2.setColor(Color.yellow);
-        g2.fillRect(25, 50, 50, 20);
-        g2.fillPolygon(new int[] {25, 25, 40}, new int[] {50, 20, 50}, 3);
-        g2.fillPolygon(new int[] {40, 50, 60}, new int[] {50, 20, 50}, 3);
-        g2.fillPolygon(new int[] {60, 75, 75}, new int[] {50, 20, 50}, 3);
+        g2.fillRect(twentyFive, fifty, fifty, twenty);
+        g2.fillPolygon(new int[] {twentyFive, twentyFive, fourty}, 
+            new int[] {fifty, twenty, fifty}, three);
+        g2.fillPolygon(new int[] {fourty, fifty, sixty}, 
+            new int[] {fifty, twenty, fifty}, three);
+        g2.fillPolygon(new int[] {sixty, seventyFive, seventyFive}, 
+            new int[] {fifty, twenty, fifty}, three);
       }
-    } else if(size == 600) {
-      g2.fillOval(20, 20, 60, 60);
-      if (playerNum > 3){
+    } else if (size == 600) {
+      g2.fillOval(twenty, twenty, sixty, sixty);
+      if (playerNum > three){
         g2.setColor(Color.yellow);
-        g2.fillRect(25/2 +25, 50/2 +25, 50/2, 20/2);
-        g2.fillPolygon(new int[] {25/2 +25, 25/2 +25, 40/2 +25}, new int[] {50/2 +25, 20/2 +25, 50/2 +25}, 3);
-        g2.fillPolygon(new int[] {40/2 +25, 50/2 +25, 60/2 +25}, new int[] {50/2 +25, 20/2 +25, 50/2 +25}, 3);
-        g2.fillPolygon(new int[] {60/2 +25, 75/2 +25, 75/2 +25}, new int[] {50/2 +25, 20/2 +25, 50/2 +25}, 3);
+        g2.fillRect(twentyFive / 2 + twentyFive, fifty / 2 + twentyFive, 
+            fifty / 2, twenty / 2);
+        g2.fillPolygon(new int[] {twentyFive / 2 + twentyFive, 
+            twentyFive / 2 + twentyFive, fourty / 2 + twentyFive}, 
+            new int[] {fifty / 2 + twentyFive, twenty / 2 + twentyFive, 
+                fifty / 2 + twentyFive}, three);
+        g2.fillPolygon(new int[] {fourty / 2 + twentyFive, 
+            fifty / 2 + twentyFive, sixty / 2 + twentyFive}, 
+            new int[] {fifty / 2 + twentyFive, twenty / 2 + twentyFive, 
+                fifty / 2 + twentyFive}, three);
+        g2.fillPolygon(new int[] {sixty / 2 + twentyFive, 
+            seventyFive / 2 + twentyFive, seventyFive / 2 + twentyFive}, 
+            new int[] {fifty / 2 + twentyFive, twenty / 2 + twentyFive, 
+                fifty / 2 + twentyFive}, three);
       }
     } else {
-      g2.fillOval(27, 27, 45, 45);
-      if (playerNum > 3){
+      g2.fillOval(twentyFive + 2, twentyFive + 2, fourty + five, fourty + five);
+      if (playerNum > three) {
         g2.setColor(Color.yellow);
-        g2.fillRect(25/3 +35, 50/3 +35, 50/3, 20/3);
-        g2.fillPolygon(new int[] {25/3 +35, 25/3 +35, 40/3 +35}, new int[] {50/3 +35, 20/3 +35, 50/3 +35}, 3);
-        g2.fillPolygon(new int[] {40/3 +35, 50/3 +35, 60/3 +35}, new int[] {50/3 +35, 20/3 +35, 50/3 +35}, 3);
-        g2.fillPolygon(new int[] {60/3 +35, 75/3 +35, 75/3 +35}, new int[] {50/3 +35, 20/3 +35, 50/3 +35}, 3);
+        g2.fillRect(twentyFive / three + thirtyFive, 
+            fifty / three + thirtyFive, fifty / three, twenty / three);
+        g2.fillPolygon(new int[] {twentyFive / three + thirtyFive, 
+            twentyFive / three + thirtyFive, fourty / three + thirtyFive}, 
+            new int[] {fifty / three + thirtyFive, twenty / three + thirtyFive, 
+                fifty / three + thirtyFive}, three);
+        g2.fillPolygon(new int[] {fourty / three + thirtyFive, 
+            fifty / three + thirtyFive, sixty / three + thirtyFive}, 
+            new int[] {fifty / three + thirtyFive, twenty / three + thirtyFive, 
+                fifty / three + thirtyFive}, three);
+        g2.fillPolygon(new int[] {sixty / three + thirtyFive, 
+            seventyFive / three + thirtyFive, 
+            seventyFive / three + thirtyFive}, 
+            new int[] {fifty / three + thirtyFive, twenty / three + thirtyFive, 
+                fifty / three + thirtyFive}, three);
       }
     } 
 
