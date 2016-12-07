@@ -138,8 +138,17 @@ public class ChooseColor extends JPanel {
     //return color1;
   }
   
-  
-  public /*Color*/ void chooseSize(final Color c1, final Color c2, final boolean playerVsComputer) {
+  /**
+   *  Allows the users to choose between a
+   *  small, medium, and large gameboard.
+   *  @param c1 player 1's color
+   *  @param c2 player 2's color
+   *  @param playerVsComputer   boolean for checking if 
+   *                player vs computer option
+   *                was checked.  
+   **/  
+  public final /*Color*/ void chooseSize(final Color c1,
+      final Color c2, final boolean playerVsComputer) {
     final String[] sizes = {"Small", "Medium", "Large"};
     //final int frameSize = 800;
     

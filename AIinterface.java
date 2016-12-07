@@ -187,10 +187,9 @@ public interface AIinterface {
         }
       
       }
-   }
       
    // Moving Up
-      else {
+      } else {
         if (randomDirectionX <= 0) {
           if ((x1 > 0) && (y1 > 0)) {
             //System.out.println("leftDown: " + tiles[y1+1][x1-1]);
