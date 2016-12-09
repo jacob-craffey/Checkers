@@ -83,9 +83,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="checkers.TestCheckers" project="Checkers_New" 
-    file="/Checkers_New/src/checkers/TestCheckers.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="733" y="1747"/>    
+  <class id="10" language="java" name="checkers.CheckersTest" project="Checkers_New" 
+    file="/Checkers_New/src/checkers/CheckersTest.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="735" y="1678"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -93,59 +93,63 @@
     </display>  
   </class>  
   <dependency id="11">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="6"/>  
-  </dependency>  
-  <dependency id="12">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="1"/>  
-  </dependency>  
-  <association id="13">    
-    <bendpoint x="525" y="1347"/>    
-    <bendpoint x="525" y="1497"/>    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="14" name="game"/>      
-      <multiplicity id="15" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <dependency id="16">    
     <bendpoint x="238" y="1497"/>    
     <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="2"/>  
   </dependency>  
-  <dependency id="17">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="8"/>  
-  </dependency>  
-  <association id="18">    
+  <association id="12">    
     <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="19" name="game1"/>      
-      <multiplicity id="20" minimum="0" maximum="1"/>    
+      <attribute id="13" name="Game"/>      
+      <multiplicity id="14" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <realization id="21">    
+  <dependency id="15">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <realization id="16">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="3"/>  
   </realization>  
+  <association id="17">    
+    <bendpoint x="525" y="1347"/>    
+    <bendpoint x="525" y="1497"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="18" name="game">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="19" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <dependency id="20">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <nesting id="21">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="5"/>  
+  </nesting>  
   <dependency id="22">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="9"/>  
   </dependency>  
-  <nesting id="23">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="5"/>  
-  </nesting>  
-  <dependency id="24">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="2"/>  
-  </dependency>  
-  <dependency id="25">    
+  <dependency id="23">    
     <end type="SOURCE" refId="8"/>    
     <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <dependency id="24">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="8"/>  
+  </dependency>  
+  <dependency id="25">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="1"/>  
   </dependency>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    

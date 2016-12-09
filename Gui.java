@@ -130,7 +130,7 @@ public class Gui extends JPanel {
   public Gui(final Color color1, final Color color2,
 		  final boolean playerVsComputer, final int frameSize) {
     game = new Game(playerVsComputer);
-    game.chooseTurn(playerVsComputer);
+    //game.chooseTurn(playerVsComputer);
     
     // Sets up necessary elements for interface
     tiles = new JButton[eightNum][eightNum];

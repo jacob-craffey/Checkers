@@ -110,7 +110,7 @@ public interface AIinterface {
     
     while (!aiPositions.isEmpty() && !moveWasMade) {
       int randomChecker = (int) (Math.random() * ((aiPositions.size() - 1)));
-      if (randomChecker % 2 == 1) {
+      if (randomChecker % 2 != 0)  {
         randomChecker--;
       }
       //System.out.println("Random: " + randomChecker);

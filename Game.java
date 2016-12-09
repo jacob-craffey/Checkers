@@ -72,20 +72,20 @@ public class Game implements AIinterface {
   private String jumpSoundFile = "./src/checkers/sounds/jump.wav";
   /** queue for managing the undo command. **/
   private static LinkedList<Integer> queue = new LinkedList<Integer>();
-  /** Player turn starts at 1 or 2. **/
-  // CHECKSTYLE:OFF
-  //private static int turn = BLACK;
   /** boolean tracking if AI is on or off. **/
   private static boolean playerVsComputer = false;
+  //CHECKSTYLE:OFF
+  /** Player turn starts at 1 or 2. **/
   static int turn = new Random().nextInt(TWO) + TWO;
   //CHECKSTYLE:ON
 
   /** 
   * Sets up the game board. 
+  * @param playerVsCom True or false, player vs computer?
   **/
-  public Game(boolean playerVsCom) {
-    if(playerVsCom == true) {
-      System.out.println("pvc: " + getTurn());
+  public Game(final boolean playerVsCom) {
+    if (playerVsCom) {
+      //System.out.println("pvc: " + getTurn());
       turn = BLACK;
       playerVsComputer = playerVsCom;
     }
@@ -124,7 +124,21 @@ public class Game implements AIinterface {
   * @return  String of the color whose turn it is.
   * @see  String
   **/
-  public static final String getTurn() {
+  public final String getTurn() {
+    if (turn == BLACK) {
+      return ("1");
+    } else {
+      return ("2");
+    }
+  }
+
+  /** 
+  * method used to determine player's turn. Used for testing 
+  * 
+  * @return  String of the color whose turn it is.
+  * @see  String
+  **/
+  public static final String getTurn2() {
     if (turn == BLACK) {
       return ("1");
     } else {
@@ -649,7 +663,7 @@ public class Game implements AIinterface {
       clip.open(audioStream);
       clip.start();
     } catch (Exception cantFindFile) {
-      System.out.println("can't find WAV file");
+      //System.out.println("can't find WAV file");
     }
   }
   
@@ -686,7 +700,6 @@ public class Game implements AIinterface {
     return move;
   }
 
-  //CHECKSTYLE:OFF
   /** 
    * Setter for move array.
    * 
@@ -694,7 +707,6 @@ public class Game implements AIinterface {
   public static void setMove(final int[] move2) {
     Game.move = move2;
   }
-  //CHECKSTYLE:ON
 
   /** 
    * Setter for tiles array.
@@ -704,7 +716,6 @@ public class Game implements AIinterface {
     return tiles;
   }
 
-  //CHECKSTYLE:OFF
   /** 
    * Setter for tiles array.
    * 
@@ -712,14 +723,12 @@ public class Game implements AIinterface {
   public static void setTiles(final int[][] tiles2) {
     Game.tiles = tiles2;
   }
-  //CHECKSTYLE:ON
 
   /** 
    * Choose if AI is on.
    * 
    * @param mode  determines if AI is on or not **/
-  public final void chooseTurn(final boolean mode) {
-    // TODO Auto-generated method stub
+  public static final void chooseTurn(final boolean mode) {
     playerVsComputer = mode;
   }
   /** 
@@ -754,7 +763,21 @@ public class Game implements AIinterface {
         }
       }
     } else {
-      Game game = new Game(playerVsComputer);
+      for (int ytile = 0; ytile < BOARD_DIMENSION; ytile++) {
+        for (int xtile = 0; xtile < BOARD_DIMENSION; xtile++) {
+          if ((ytile + xtile) % TWO == 0) {
+            if (ytile < THREE) {
+              getTiles()[ytile][xtile] = RED;
+            } else if (ytile > FOUR) {
+              getTiles()[ytile][xtile] = BLACK;
+            } else {
+              getTiles()[ytile][xtile] = BROWN_SPACE;
+            }
+          } else {
+            getTiles()[ytile][xtile] = GREY_SPACE;
+          }
+        }
+      } addUndoPositions();
     }
     
     if (!queue.isEmpty()) {
@@ -770,7 +793,25 @@ public class Game implements AIinterface {
         }
       }
     } else {
-      Game game = new Game(playerVsComputer);
+      for (int ytile = 0; ytile < BOARD_DIMENSION; ytile++) {
+        for (int xtile = 0; xtile < BOARD_DIMENSION; xtile++) {
+          if ((ytile + xtile) % TWO == 0) {
+            if (ytile < THREE) {
+              getTiles()[ytile][xtile] = RED;
+            } else if (ytile > FOUR) {
+              getTiles()[ytile][xtile] = BLACK;
+            } else {
+              getTiles()[ytile][xtile] = BROWN_SPACE;
+            }
+          } else {
+            getTiles()[ytile][xtile] = GREY_SPACE;
+          }
+        }
+      } addUndoPositions();
+      if (playerVsComputer) {
+          //turn = BLACK;
+          setTurn(BLACK);
+      }
     }
   }
   
@@ -785,6 +826,14 @@ public class Game implements AIinterface {
         queue.add(tiles[y][x]);
       }  
     }
+  }
+
+  /** 
+   * Method for changing the turn in the test cases.
+   * @param turn2 desired turn.
+   * **/
+  public static void setTurn(final int turn2) {
+    turn = turn2;
   }
   
 }

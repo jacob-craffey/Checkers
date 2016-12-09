@@ -133,6 +133,7 @@ public class ChooseColor extends JPanel {
         //new GUI();
         //Gui.change(color1, color2, playerVsComputer);
         chooseSize(color1, color2, playerVsComputer);
+        frame2.dispose();
       }
     });
     //return color1;
@@ -188,6 +189,7 @@ public class ChooseColor extends JPanel {
     
   //new GUI();
     Gui.change(c1, c2, playerVsComputer, frameSize);
+    frame3.dispose();
       }
     });
   }
